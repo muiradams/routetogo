@@ -1,0 +1,10 @@
+{
+  "presets": ["env", "react"],
+}
+
+//Should I use the following instead? Per: http://javascriptplayground.com/blog/2016/10/moving-to-webpack-2/
+// {
+//   "presets": [
+//   ["es2015", { "modules": false }]
+// ]
+// }

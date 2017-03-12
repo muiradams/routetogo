@@ -5,7 +5,7 @@ const postgraphql = require('postgraphql').postgraphql;
 const app = express();
 const port = process.env.PORT || 4000;
 // TODO: needs to point to location of database on server for production
-const DB_URI = 'postgres://localhost:5432/flights';
+const DB_URI = 'postgres://localhost:5432/routetogo';
 
 app.use(postgraphql(DB_URI, {
   disableDefaultMutations: true,

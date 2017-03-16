@@ -1,5 +1,5 @@
 {
-  "presets": ["env", "react"],
+  "presets": ["env", "es2015", "react"],
 }
 
 //Should I use the following instead? Per: http://javascriptplayground.com/blog/2016/10/moving-to-webpack-2/

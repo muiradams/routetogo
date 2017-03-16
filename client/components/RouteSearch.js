@@ -5,7 +5,7 @@ import SearchBoxes from './SearchBoxes';
 import SearchButton from './SearchButton';
 
 const RouteSearch = () => (
-  <div id="route-search">
+  <div>
     <h1 id="title-large">ROUTE to GO</h1>
     <h2 id="site-description">Find all possible flight routes between two cities.</h2>
     <SearchBoxes />

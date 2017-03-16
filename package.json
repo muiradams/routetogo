@@ -7,7 +7,7 @@
     "dev": "nodemon server.js",
     "postinstall": "webpack -p --config ./webpack.config.prod.js",
     "start": "NODE_ENV='production' node server.js",
-    "test": "mocha --compilers js:babel-core/register --require ./test/test_helper.js --recursive ./test",
+    "test": "mocha --compilers js:babel-register --require ./test/test_helper.js --recursive ./test",
     "test:watch": "npm run test -- --watch"
   },
   "repository": "https://github.com/muiradams/routetogo",
@@ -15,12 +15,12 @@
   "license": "GPL-3.0",
   "dependencies": {
     "apollo-client": "^1.0.0-rc.2",
-    "babel-core": "^6.23.1",
     "babel-loader": "^6.3.2",
     "babel-preset-env": "^1.2.0",
     "babel-preset-es2015": "^6.22.0",
     "babel-preset-react": "^6.23.0",
     "babel-preset-stage-1": "^6.22.0",
+    "babel-register": "^6.24.0",
     "css-loader": "^0.26.2",
     "express": "^4.15.0",
     "extract-text-webpack-plugin": "^2.1.0",
@@ -44,16 +44,17 @@
   },
   "devDependencies": {
     "chai": "^3.5.0",
-    "chai-jquery": "^2.0.0",
+    "chai-enzyme": "^0.6.1",
+    "enzyme": "^2.7.1",
     "eslint": "^3.17.1",
     "eslint-config-airbnb": "^14.1.0",
     "eslint-plugin-import": "^2.2.0",
     "eslint-plugin-jsx-a11y": "^4.0.0",
     "eslint-plugin-mocha": "^4.8.0",
     "eslint-plugin-react": "^6.10.0",
-    "jquery": "^3.1.1",
     "jsdom": "^9.11.0",
     "mocha": "^3.2.0",
-    "react-addons-test-utils": "^15.4.2"
+    "react-addons-test-utils": "^15.4.2",
+    "sinon": "^2.0.0"
   }
 }

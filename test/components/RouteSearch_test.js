@@ -1,17 +1,21 @@
 /* eslint-disable func-names, prefer-arrow-callback, no-unused-expressions */
-
-import { renderComponent, expect } from '../test_helper';
+import React from 'react';
+import { expect } from 'chai';
+import { shallow } from 'enzyme';
 import RouteSearch from '../../client/components/RouteSearch';
+import SearchBoxes from '../../client/components/SearchBoxes';
+import SearchAdvanced from '../../client/components/SearchAdvanced';
+import SearchButton from '../../client/components/SearchButton';
 
-describe('RouteSearch', function () {
+describe('<RouteSearch />', function () {
   let component;
 
-  beforeEach('render component', function () {
-    component = renderComponent(RouteSearch);
+  beforeEach(function () {
+    component = shallow(<RouteSearch />);
   });
 
-  it('has the correct id', function () {
-    expect(component).to.have.id('route-search');
+  it('component renders', function () {
+    expect(component).to.have.length(1);
   });
 
   it('shows the title of the page as an h1', function () {
@@ -24,15 +28,15 @@ describe('RouteSearch', function () {
     expect(component.find('h2')).to.have.id('site-description');
   });
 
-  it('renders the SearchBoxes component with correct id', function () {
-    expect(component.find('#search-boxes')).to.exist;
+  it('has a <SearchBoxes /> component', function () {
+    expect(component.find(SearchBoxes)).to.have.length(1);
   });
 
-  it('renders the SearchAdvanced component with correct id', function () {
-    expect(component.find('#search-advanced')).to.exist;
+  it('has a <SearchAdvanced /> component', function () {
+    expect(component.find(SearchAdvanced)).to.have.length(1);
   });
 
-  it('renders the SearchButton component with correct id', function () {
-    expect(component.find('#search-button')).to.exist;
+  it('has a <SearchButton /> component', function () {
+    expect(component.find(SearchButton)).to.have.length(1);
   });
 });

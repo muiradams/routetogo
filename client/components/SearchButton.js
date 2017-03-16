@@ -1,7 +1,7 @@
 import React from 'react';
 
 const SearchButton = () => (
-  <div id="search-button"><button action="submit">Find Routes</button></div>
+  <button action="submit">Find Routes</button>
 );
 
 export default SearchButton;

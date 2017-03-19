@@ -7,7 +7,7 @@ class SearchButton extends Component {
   }
 
   handleClick() {
-    this.props.onSubmit('SFO');
+    this.props.onSubmit();
   }
 
   render() {

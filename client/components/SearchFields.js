@@ -41,6 +41,8 @@ class SearchFields extends Component {
 }
 
 SearchFields.propTypes = {
+  departureCity: React.PropTypes.string.isRequired,
+  destinationCity: React.PropTypes.string.isRequired,
   onDepartureCityInput: React.PropTypes.func.isRequired,
   onDestinationCityInput: React.PropTypes.func.isRequired,
 };

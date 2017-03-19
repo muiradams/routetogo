@@ -3,17 +3,16 @@ import React, { Component } from 'react';
 class SearchFields extends Component {
   constructor(props) {
     super(props);
-    this.state = { departureCity: '', destinationCity: '' };
     this.setDepartureCity = this.setDepartureCity.bind(this);
     this.setDestinationCity = this.setDestinationCity.bind(this);
   }
 
   setDepartureCity(event) {
-    this.setState({ departureCity: event.target.value });
+    this.props.onDepartureCityInput(event.target.value);
   }
 
   setDestinationCity(event) {
-    this.setState({ destinationCity: event.target.value });
+    this.props.onDestinationCityInput(event.target.value);
   }
 
   render() {
@@ -23,7 +22,7 @@ class SearchFields extends Component {
         <input
           id="departure"
           type="text"
-          value={this.state.departureCity}
+          value={this.props.departureCity}
           placeholder="Departure"
           onChange={this.setDepartureCity}
         />
@@ -31,7 +30,7 @@ class SearchFields extends Component {
         <input
           id="destination"
           type="text"
-          value={this.state.destinationCity}
+          value={this.props.destinationCity}
           placeholder="Destination"
           onChange={this.setDestinationCity}
         />

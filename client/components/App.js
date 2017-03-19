@@ -22,7 +22,7 @@ export default class App extends Component {
   }
 
   fetchRoutes() {
-    console.log('fetching routes...');
+    console.log(`fetching routes for ${this.state.departureCity} to ${this.state.destinationCity}...`);
   }
 
   handleDepartureCityInput(departureCity) {
@@ -62,7 +62,6 @@ export default class App extends Component {
           routes={this.state.routes}
           onSelectedRouteInput={this.handleSelectedRouteInput}
         />
-        <div>City: {this.state.routes}</div>
       </div>
     );
   }

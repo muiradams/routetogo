@@ -2,6 +2,7 @@
 import React from 'react';
 import { expect } from 'chai';
 import { mount, shallow } from 'enzyme';
+import { spy } from 'sinon';
 import SearchFields from '../../client/components/SearchFields';
 
 describe('<SearchFields />', () => {
@@ -19,19 +20,33 @@ describe('<SearchFields />', () => {
     expect(wrapper.find('input')).to.have.length(2);
   });
 
-  it('departure city field accepts input', () => {
-    wrapper = mount(<SearchFields />);
+  it('passes input to onDepartureCityInput prop function', () => {
+    const handleDepartureCityInputSpy = spy();
+    wrapper = mount(<SearchFields onDepartureCityInput={handleDepartureCityInputSpy} />);
     const input = wrapper.find('input').at(0);
     input.simulate('change', { target: { value: 'CDG' } });
-    expect(wrapper.state('departureCity')).to.equal('CDG');
-    expect(input.prop('value')).to.equal('CDG');
+    expect(handleDepartureCityInputSpy.calledOnce).to.equal(true);
+    expect(handleDepartureCityInputSpy.calledWith('CDG')).to.equal(true);
   });
-
-  it('destination city field accepts input', () => {
-    wrapper = mount(<SearchFields />);
+  
+  it('passes input to onDestinationCityInput prop function', () => {
+    const handleDestinationCityInputSpy = spy();
+    wrapper = mount(<SearchFields onDestinationCityInput={handleDestinationCityInputSpy} />);
     const input = wrapper.find('input').at(1);
     input.simulate('change', { target: { value: 'BCN' } });
-    expect(wrapper.state('destinationCity')).to.equal('BCN');
-    expect(input.prop('value')).to.equal('BCN');
+    expect(handleDestinationCityInputSpy.calledOnce).to.equal(true);
+    expect(handleDestinationCityInputSpy.calledWith('BCN')).to.equal(true);
+  });
+
+  it('departure input shows the correct departureCity', () => {
+    wrapper = mount(<SearchFields departureCity={'SFO'} />);
+    const input = wrapper.find('input').at(0);
+    expect(input.prop('value')).to.equal('SFO');
+  });
+
+  it('destination input shows the correct destinationCity', () => {
+    wrapper = mount(<SearchFields destinationCity={'CDG'} />);
+    const input = wrapper.find('input').at(1);
+    expect(input.prop('value')).to.equal('CDG');
   });
 });

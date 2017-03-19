@@ -1,7 +1,24 @@
-import React from 'react';
+import React, { Component } from 'react';
 
-const SearchButton = () => (
-  <button action="submit">Find Routes</button>
-);
+class SearchButton extends Component {
+  constructor(props) {
+    super(props);
+    this.handleClick = this.handleClick.bind(this);
+  }
+
+  handleClick() {
+    this.props.onSubmit('SFO');
+  }
+
+  render() {
+    return (
+      <button id="route-search-button" onClick={this.handleClick}>Find Routes</button>
+    );
+  }
+}
+
+SearchButton.propTypes = {
+  onSubmit: React.PropTypes.func.isRequired,
+};
 
 export default SearchButton;

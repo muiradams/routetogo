@@ -1,8 +1,12 @@
-import React from 'react';
+import React, { Component } from 'react';
 
-const RouteList= () => (
-  <div>RouteList</div>
-);
+class RouteList extends Component {
+  render() {
+    return (
+      <div>RouteList</div>
+    );
+  }
+}
 
 RouteList.propTypes = {
   routes: React.PropTypes.arrayOf(React.PropTypes.string).isRequired,

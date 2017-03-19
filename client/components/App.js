@@ -4,6 +4,7 @@ import SearchAdvanced from './SearchAdvanced';
 import SearchButton from './SearchButton';
 import RouteMap from './RouteMap';
 import RouteList from './RouteList';
+ import seedData from '../../data/seed-data-for-dev.json';
 
 export default class App extends Component {
   constructor(props) {
@@ -23,6 +24,7 @@ export default class App extends Component {
 
   fetchRoutes() {
     console.log(`fetching routes for ${this.state.departureCity} to ${this.state.destinationCity}...`);
+    this.setState({ routes: seedData.data.allRoutes.nodes });
   }
 
   handleDepartureCityInput(departureCity) {
@@ -57,11 +59,15 @@ export default class App extends Component {
           onAdvancedOptionsInput={this.handleAdvancedOptionsInput}
         />
         <SearchButton onSubmit={this.fetchRoutes} />
-        <RouteMap selectedRoute={this.state.selectedRoute} />
-        <RouteList
-          routes={this.state.routes}
-          onSelectedRouteInput={this.handleSelectedRouteInput}
-        />
+        {this.state.routes.length > 0 &&
+          <div>
+            <RouteMap selectedRoute={this.state.selectedRoute} />
+            <RouteList
+              routes={this.state.routes}
+              onSelectedRouteInput={this.handleSelectedRouteInput}
+            />
+          </div>
+        }
       </div>
     );
   }

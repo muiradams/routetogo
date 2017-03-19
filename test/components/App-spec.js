@@ -42,12 +42,22 @@ describe('<App />', () => {
       expect(wrapper.find(SearchButton)).to.have.length(1);
     });
 
-    it('shows a <RouteMap /> component', () => {
+    it('shows a <RouteMap /> component if there are routes', () => {
+      wrapper.setState({ routes: ['SFO', 'CDG'] })
       expect(wrapper.find(RouteMap)).to.have.length(1);
     });
+  
+    it('hides <RouteMap /> component if there aren\'t routes', () => {
+      expect(wrapper.find(RouteMap)).to.have.length(0);
+    });
 
-    it('shows a <RouteList /> component', () => {
+    it('shows a <RouteList /> component if there are routes', () => {
+      wrapper.setState({ routes: ['SFO', 'CDG'] });
       expect(wrapper.find(RouteList)).to.have.length(1);
+    });
+
+    it('hides <RouteList /> component if there aren\'t routes', () => {
+      expect(wrapper.find(RouteList)).to.have.length(0);
     });
   });
 
@@ -154,6 +164,8 @@ describe('<App />', () => {
   context('sends the correct props to <RouteMap />', () => {
     it('passes selectedRoute to routeMap', () => {
       wrapper = mount(<App />);
+      // first add routes so that RouteMap is rendered
+      wrapper.setState({ routes: ['SFO', 'CDG'] });
       const routeMap = wrapper.find(RouteMap);
       wrapper.setState({ selectedRoute: { departureCity: 'SFO', destinationCity: 'CDG' } });
       const selectedRoute = wrapper.state('selectedRoute');
@@ -164,6 +176,8 @@ describe('<App />', () => {
   context('sends the correct props to <RouteList />', () => {
     it('passes routes to routeList', () => {
       wrapper = mount(<App />);
+      // first add routes so that RouteList is rendered
+      wrapper.setState({ routes: ['SFO', 'CDG'] });
       const routeList = wrapper.find(RouteList);
       wrapper.setState({
         routes: ['dog', 'cat'],
@@ -173,6 +187,8 @@ describe('<App />', () => {
     });
 
     it('passes handleSelectedRouteInput function to RouteList', () => {
+      // first add routes so that RouteList is rendered
+      wrapper.setState({ routes: ['SFO', 'CDG'] });
       const routeList = wrapper.find(RouteList);
       const handleSelectedRouteInput = wrapper.instance().handleSelectedRouteInput;
       expect(routeList.prop('onSelectedRouteInput')).to.eql(handleSelectedRouteInput);

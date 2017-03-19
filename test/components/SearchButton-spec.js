@@ -7,9 +7,10 @@ import SearchButton from '../../client/components/SearchButton';
 
 describe('<SearchButton />', () => {
   let wrapper;
+  const onSubmit = () => {};
 
   beforeEach(() => {
-    wrapper = shallow(<SearchButton />);
+    wrapper = shallow(<SearchButton onSubmit={onSubmit} />);
   });
 
   it('component renders', () => {

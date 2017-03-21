@@ -11,6 +11,12 @@ import RouteList from '../../client/components/RouteList';
 
 describe('<App />', () => {
   let wrapper;
+  const routes = [{
+    nodeId: 'WyJyb3V0ZXMiLDU1NzY4XQ==',
+    departureCity: 'SFO',
+    destinationCity: 'CDG',
+  }];
+
   beforeEach(() => {
     wrapper = shallow(<App />);
   });
@@ -43,7 +49,7 @@ describe('<App />', () => {
     });
 
     it('shows a <RouteMap /> component if there are routes', () => {
-      wrapper.setState({ routes: ['SFO', 'CDG'] })
+      wrapper.setState({ routes });
       expect(wrapper.find(RouteMap)).to.have.length(1);
     });
 
@@ -52,7 +58,7 @@ describe('<App />', () => {
     });
 
     it('shows a <RouteList /> component if there are routes', () => {
-      wrapper.setState({ routes: ['SFO', 'CDG'] });
+      wrapper.setState({ routes });
       expect(wrapper.find(RouteList)).to.have.length(1);
     });
 
@@ -163,9 +169,9 @@ describe('<App />', () => {
     it('passes selectedRoute to routeMap', () => {
       wrapper = mount(<App />);
       // first add routes so that RouteMap is rendered
-      wrapper.setState({ routes: ['SFO', 'CDG'] });
+      wrapper.setState({ routes });
       const routeMap = wrapper.find(RouteMap);
-      wrapper.setState({ selectedRoute: { departureCity: 'SFO', destinationCity: 'CDG' } });
+      wrapper.setState({ selectedRoute: routes[0] });
       const selectedRoute = wrapper.state('selectedRoute');
       expect(routeMap.prop('selectedRoute')).to.equal(selectedRoute);
     });
@@ -174,31 +180,26 @@ describe('<App />', () => {
   context('sends the correct props to <RouteList />', () => {
     it('passes routes to routeList', () => {
       wrapper = mount(<App />);
-      // first add routes so that RouteList is rendered
-      wrapper.setState({ routes: ['SFO', 'CDG'] });
+      wrapper.setState({ routes });
       const routeList = wrapper.find(RouteList);
-      wrapper.setState({
-        routes: ['dog', 'cat'],
-      });
-      const routes = wrapper.state('routes');
-      expect(routeList.prop('routes')).to.eql(routes);
+      expect(routeList.prop('routes')).to.eql(wrapper.state('routes'));
     });
 
     it('passes selectedRoute to routeList', () => {
       wrapper = mount(<App />);
       // first add routes so that RouteList is rendered
-      wrapper.setState({ routes: ['SFO', 'CDG'] });
-      const routeList = wrapper.find(RouteList);
       wrapper.setState({
-        selectedRoute: { nodeId: 'WyJyb3V0ZXMiLDU1NzY4XQ==' },
+        routes,
+        selectedRoute: routes[0],
       });
+      const routeList = wrapper.find(RouteList);
       const selectedRouteId = wrapper.state('selectedRoute').nodeId;
       expect(routeList.prop('selectedRouteId')).to.eql(selectedRouteId);
     });
 
     it('passes handleSelectedRouteInput function to RouteList', () => {
       // first add routes so that RouteList is rendered
-      wrapper.setState({ routes: ['SFO', 'CDG'] });
+      wrapper.setState({ routes });
       const routeList = wrapper.find(RouteList);
       const handleSelectedRouteInput = wrapper.instance().handleSelectedRouteInput;
       expect(routeList.prop('onSelectedRouteInput')).to.eql(handleSelectedRouteInput);

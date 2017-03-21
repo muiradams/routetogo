@@ -102,12 +102,12 @@ describe('<RouteList />', () => {
   });
 
   it('renders zero routes', () => {
-    wrapper = shallow(<RouteList />);
+    wrapper = shallow(<RouteList {...props} />);
     expect(wrapper.find('li')).to.have.length(0);
   });
 
   it('renders undefined routes', () => {
-    wrapper = shallow(<RouteList routes={undefined} />);
+    wrapper = shallow(<RouteList routes={undefined} {...props} />);
     expect(wrapper.find('li')).to.have.length(0);
   });
 

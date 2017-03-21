@@ -46,8 +46,8 @@ describe('<App />', () => {
       wrapper.setState({ routes: ['SFO', 'CDG'] })
       expect(wrapper.find(RouteMap)).to.have.length(1);
     });
-  
-    it('hides <RouteMap /> component if there aren\'t routes', () => {
+
+    it('doesn\'t show <RouteMap /> component if there aren\'t routes', () => {
       expect(wrapper.find(RouteMap)).to.have.length(0);
     });
 
@@ -56,7 +56,7 @@ describe('<App />', () => {
       expect(wrapper.find(RouteList)).to.have.length(1);
     });
 
-    it('hides <RouteList /> component if there aren\'t routes', () => {
+    it('doesn\'t show <RouteList /> component if there aren\'t routes', () => {
       expect(wrapper.find(RouteList)).to.have.length(0);
     });
   });
@@ -103,8 +103,6 @@ describe('<App />', () => {
       wrapper.instance().handleSelectedRouteInput({ alliance: 'oneworld' });
       expect(wrapper.state('selectedRoute')).to.eql({ alliance: 'oneworld' });
     });
-
-    it('async queries GraphQL for data and adds fetched routes to state');
   });
 
   context('sends the correct props to <SearchFields />', () => {
@@ -186,6 +184,18 @@ describe('<App />', () => {
       expect(routeList.prop('routes')).to.eql(routes);
     });
 
+    it('passes selectedRoute to routeList', () => {
+      wrapper = mount(<App />);
+      // first add routes so that RouteList is rendered
+      wrapper.setState({ routes: ['SFO', 'CDG'] });
+      const routeList = wrapper.find(RouteList);
+      wrapper.setState({
+        selectedRoute: { nodeId: 'WyJyb3V0ZXMiLDU1NzY4XQ==' },
+      });
+      const selectedRouteId = wrapper.state('selectedRoute').nodeId;
+      expect(routeList.prop('selectedRouteId')).to.eql(selectedRouteId);
+    });
+
     it('passes handleSelectedRouteInput function to RouteList', () => {
       // first add routes so that RouteList is rendered
       wrapper.setState({ routes: ['SFO', 'CDG'] });
@@ -193,5 +203,10 @@ describe('<App />', () => {
       const handleSelectedRouteInput = wrapper.instance().handleSelectedRouteInput;
       expect(routeList.prop('onSelectedRouteInput')).to.eql(handleSelectedRouteInput);
     });
+  });
+
+  context('fetchRoutes function', () => {
+    it('validates that there is departure or destination city, else throws error');
+    it('async queries GraphQL for data and adds fetched routes to state');
   });
 });

@@ -3,12 +3,14 @@
     "allRoutes": {
       "nodes": [
         {
+          "nodeId": "WyJyb3V0ZXMiLDU1NzY4XQ==",
           "sourceAirport": "ACV",
           "destinationAirport": "CEC",
           "airlineByAirlineId": {
             "name": "United Airlines"
           },
           "airportBySourceAirportId": {
+            "nodeId": "WyJhaXJwb3J0cyIsNDM4NF0=",
             "name": "Arcata Airport",
             "iata": "ACV",
             "city": "Arcata CA",
@@ -17,6 +19,7 @@
             "longitude": -124.109001159668
           },
           "airportByDestinationAirportId": {
+            "nodeId": "WyJhaXJwb3J0cyIsNTcyN10=",
             "name": "Jack Mc Namara Field Airport",
             "iata": "CEC",
             "city": "Crescent City",
@@ -26,12 +29,14 @@
           }
         },
         {
+          "nodeId": "WyJyb3V0ZXMiLDU1NzY5XQ==",
           "sourceAirport": "ACV",
           "destinationAirport": "SFO",
           "airlineByAirlineId": {
             "name": "United Airlines"
           },
           "airportBySourceAirportId": {
+            "nodeId": "WyJhaXJwb3J0cyIsNDM4NF0=",
             "name": "Arcata Airport",
             "iata": "ACV",
             "city": "Arcata CA",
@@ -40,6 +45,7 @@
             "longitude": -124.109001159668
           },
           "airportByDestinationAirportId": {
+            "nodeId": "WyJhaXJwb3J0cyIsMzQ2OV0=",
             "name": "San Francisco International Airport",
             "iata": "SFO",
             "city": "San Francisco",
@@ -49,12 +55,14 @@
           }
         },
         {
+          "nodeId": "WyJyb3V0ZXMiLDU1NzcwXQ==",
           "sourceAirport": "ACV",
           "destinationAirport": "SMF",
           "airlineByAirlineId": {
             "name": "United Airlines"
           },
           "airportBySourceAirportId": {
+            "nodeId": "WyJhaXJwb3J0cyIsNDM4NF0=",
             "name": "Arcata Airport",
             "iata": "ACV",
             "city": "Arcata CA",
@@ -63,6 +71,7 @@
             "longitude": -124.109001159668
           },
           "airportByDestinationAirportId": {
+            "nodeId": "WyJhaXJwb3J0cyIsMzgxN10=",
             "name": "Sacramento International Airport",
             "iata": "SMF",
             "city": "Sacramento",

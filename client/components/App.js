@@ -4,7 +4,7 @@ import SearchAdvanced from './SearchAdvanced';
 import SearchButton from './SearchButton';
 import RouteMap from './RouteMap';
 import RouteList from './RouteList';
- import seedData from '../../data/seed-data-for-dev.json';
+import seedData from '../../data/seed-data-for-dev.json';
 
 export default class App extends Component {
   constructor(props) {
@@ -20,6 +20,7 @@ export default class App extends Component {
     this.handleDepartureCityInput = this.handleDepartureCityInput.bind(this);
     this.handleDestinationCityInput = this.handleDestinationCityInput.bind(this);
     this.handleAdvancedOptionsInput = this.handleAdvancedOptionsInput.bind(this);
+    this.handleSelectedRouteInput = this.handleSelectedRouteInput.bind(this);
   }
 
   fetchRoutes() {
@@ -44,6 +45,14 @@ export default class App extends Component {
   }
 
   render() {
+    const selectedRoute = this.state.selectedRoute;
+    let selectedRouteId = '';
+    if (selectedRoute) {
+      if (selectedRoute.nodeId) {
+        selectedRouteId = selectedRoute.nodeId;
+      }
+    }
+
     return (
       <div>
         <h1 id="site-title">ROUTE to GO</h1>
@@ -64,6 +73,7 @@ export default class App extends Component {
             <RouteMap selectedRoute={this.state.selectedRoute} />
             <RouteList
               routes={this.state.routes}
+              selectedRouteId={selectedRouteId}
               onSelectedRouteInput={this.handleSelectedRouteInput}
             />
           </div>

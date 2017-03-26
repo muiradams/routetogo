@@ -2,20 +2,30 @@
 import React from 'react';
 import { expect } from 'chai';
 import { mount, shallow } from 'enzyme';
+import { ApolloProvider } from 'react-apollo';
+import ApolloClient from 'apollo-client';
 import App from '../../client/components/App';
 import SearchFields from '../../client/components/SearchFields';
 import SearchAdvanced from '../../client/components/SearchAdvanced';
 import SearchButton from '../../client/components/SearchButton';
 import RouteMap from '../../client/components/RouteMap';
-import RouteList from '../../client/components/RouteList';
+import RouteListNonstop from '../../client/containers/RouteListNonstop';
 
 describe('<App />', () => {
   let wrapper;
-  const routes = [{
-    nodeId: 'WyJyb3V0ZXMiLDU1NzY4XQ==',
-    departureCity: 'SFO',
-    destinationCity: 'CDG',
-  }];
+  const query = {
+    sourceAirport: 'SMF',
+    destinationAirport: 'CDG',
+    advancedOptions: {
+      stops: 0,
+      airline: 'AA',
+      alliance: 'none',
+    },
+  };
+  const client = new ApolloClient();
+  const wrapWithProvider = component => (
+    <ApolloProvider client={client}>{component}</ApolloProvider>
+  );
 
   beforeEach(() => {
     wrapper = shallow(<App />);
@@ -25,79 +35,78 @@ describe('<App />', () => {
     expect(wrapper).to.have.length(1);
   });
 
-  context('renders all child components', () => {
-    it('shows the title of the page as an h1', () => {
-      expect(wrapper.find('h1')).to.exist;
-      expect(wrapper.find('h1')).to.have.id('site-title');
-    });
-
-    it('shows a description of the page as an h2', () => {
-      expect(wrapper.find('h2')).to.exist;
-      expect(wrapper.find('h2')).to.have.id('site-description');
-    });
-
-    it('shows a <SearchFields /> component', () => {
-      expect(wrapper.find(SearchFields)).to.have.length(1);
-    });
-
-    it('shows a <SearchAdvanced /> component', () => {
-      expect(wrapper.find(SearchAdvanced)).to.have.length(1);
-    });
-
-    it('shows a <SearchButton /> component', () => {
-      expect(wrapper.find(SearchButton)).to.have.length(1);
-    });
-
-    it('shows a <RouteMap /> component if there are routes', () => {
-      wrapper.setState({ routes });
-      expect(wrapper.find(RouteMap)).to.have.length(1);
-    });
-
-    it('doesn\'t show <RouteMap /> component if there aren\'t routes', () => {
-      expect(wrapper.find(RouteMap)).to.have.length(0);
-    });
-
-    it('shows a <RouteList /> component if there are routes', () => {
-      wrapper.setState({ routes });
-      expect(wrapper.find(RouteList)).to.have.length(1);
-    });
-
-    it('doesn\'t show <RouteList /> component if there aren\'t routes', () => {
-      expect(wrapper.find(RouteList)).to.have.length(0);
-    });
+  // RENDERS CHILD COMPONENTS
+  it('shows the title of the page as an h1', () => {
+    expect(wrapper.find('h1')).to.exist;
+    expect(wrapper.find('h1')).to.have.id('site-title');
   });
 
-  context('state is initialized correctly', () => {
-    it('starts with an empty list of routes', () => {
-      expect(wrapper.state('routes')).to.eql([]);
+  it('shows a description of the page as an h2', () => {
+    expect(wrapper.find('h2')).to.exist;
+    expect(wrapper.find('h2')).to.have.id('site-description');
+  });
+
+  it('shows a <SearchFields /> component', () => {
+    expect(wrapper.find(SearchFields)).to.have.length(1);
+  });
+
+  it('shows a <SearchAdvanced /> component', () => {
+    expect(wrapper.find(SearchAdvanced)).to.have.length(1);
+  });
+
+  it('shows a <SearchButton /> component', () => {
+    expect(wrapper.find(SearchButton)).to.have.length(1);
+  });
+
+  it('shows a <RouteListNonstop /> component if a query exists', () => {
+    wrapper = shallow(wrapWithProvider(<App />)).shallow();
+    wrapper.setState({ query });
+    expect(wrapper.find(RouteListNonstop)).to.have.length(1);
+  });
+
+  it('doesn\'t show <RouteListNonstop /> component if there isn\'t a query', () => {
+    wrapper = shallow(wrapWithProvider(<App />)).shallow();
+    expect(wrapper.find(RouteListNonstop)).to.have.length(0);
+  });
+
+  // INITIALIZES THE STATE
+  context('state', () => {
+    it('starts with an empty sourceAirport', () => {
+      expect(wrapper.state('sourceAirport')).to.eql('');
     });
 
-    it('starts with an empty selectedRoute', () => {
-      expect(wrapper.state('selectedRoute')).to.eql({});
-    });
-
-    it('starts with an empty departureCity', () => {
-      expect(wrapper.state('departureCity')).to.eql('');
-    });
-
-    it('starts with an empty destinationCity', () => {
-      expect(wrapper.state('destinationCity')).to.eql('');
+    it('starts with an empty destinationAirport', () => {
+      expect(wrapper.state('destinationAirport')).to.eql('');
     });
 
     it('starts with an empty advancedOptions', () => {
-      expect(wrapper.state('advancedOptions')).to.eql({});
+      const advancedOptions = {
+        stops: '0',
+        airline: 'all',
+        alliance: 'none',
+      }
+      expect(wrapper.state('advancedOptions')).to.eql(advancedOptions);
+    });
+
+    it('starts with an empty query', () => {
+      expect(wrapper.state('query')).to.eql({});
+    });
+    
+    it('starts with an empty errorMessage', () => {
+      expect(wrapper.state('errorMessage')).to.eql('');
     });
   });
 
-  context('updates the state', () => {
-    it('adds departureCity to state', () => {
-      wrapper.instance().handleDepartureCityInput('SMF');
-      expect(wrapper.state('departureCity')).to.eql('SMF');
+  // UPDATES THE STATE
+  context('event handlers', () => {
+    it('adds sourceAirport to state', () => {
+      wrapper.instance().handleSourceAirportInput('SMF');
+      expect(wrapper.state('sourceAirport')).to.eql('SMF');
     });
 
-    it('adds destinationCity to state', () => {
-      wrapper.instance().handleDestinationCityInput('SMF');
-      expect(wrapper.state('destinationCity')).to.eql('SMF');
+    it('adds destinationAirport to state', () => {
+      wrapper.instance().handleDestinationAirportInput('SMF');
+      expect(wrapper.state('destinationAirport')).to.eql('SMF');
     });
 
     it('adds advancedOptions to state', () => {
@@ -105,52 +114,45 @@ describe('<App />', () => {
       expect(wrapper.state('advancedOptions')).to.eql({ alliance: 'oneworld' });
     });
 
-    it('adds selectedRoute to state', () => {
-      wrapper.instance().handleSelectedRouteInput({ alliance: 'oneworld' });
-      expect(wrapper.state('selectedRoute')).to.eql({ alliance: 'oneworld' });
+    it('adds errorMessage to state', () => {
+      wrapper.instance().handleErrorMessage('Error');
+      expect(wrapper.state('errorMessage')).to.eql('Error');
     });
   });
 
+  // SENDS PROPS TO COMPONENTS
   context('sends the correct props to <SearchFields />', () => {
-    it('passes departureCity to SearchFields', () => {
+    it('passes sourceAirport', () => {
       wrapper = mount(<App />);
       const searchFields = wrapper.find(SearchFields);
-      wrapper.setState({ departureCity: 'SFO' });
-      const departureCity = wrapper.state('departureCity');
-      expect(searchFields.prop('departureCity')).to.equal(departureCity);
+      wrapper.setState({ sourceAirport: 'SFO' });
+      const sourceAirport = wrapper.state('sourceAirport');
+      expect(searchFields.prop('sourceAirport')).to.equal(sourceAirport);
     });
 
-    it('passes destinationCity to SearchFields', () => {
+    it('passes destinationAirport', () => {
       wrapper = mount(<App />);
       const searchFields = wrapper.find(SearchFields);
-      wrapper.setState({ destinationCity: 'CDG' });
-      const destinationCity = wrapper.state('destinationCity');
-      expect(searchFields.prop('destinationCity')).to.equal(destinationCity);
+      wrapper.setState({ destinationAirport: 'CDG' });
+      const destinationAirport = wrapper.state('destinationAirport');
+      expect(searchFields.prop('destinationAirport')).to.equal(destinationAirport);
     });
 
-    it('passes handleDepartureCityInput function to SearchFields', () => {
+    it('passes handleSourceAirportInput function', () => {
       const searchFields = wrapper.find(SearchFields);
-      const handleDepartureCityInput = wrapper.instance().handleDepartureCityInput;
-      expect(searchFields.prop('onDepartureCityInput')).to.eql(handleDepartureCityInput);
+      const handleSourceAirportInput = wrapper.instance().handleSourceAirportInput;
+      expect(searchFields.prop('onSourceAirportInput')).to.eql(handleSourceAirportInput);
     });
 
-    it('passes handleDestinationCityInput function to SearchFields', () => {
+    it('passes handleDestinationAirportInput function', () => {
       const searchFields = wrapper.find(SearchFields);
-      const handleDestinationCityInput = wrapper.instance().handleDestinationCityInput;
-      expect(searchFields.prop('onDestinationCityInput')).to.eql(handleDestinationCityInput);
+      const handleDestinationAirportInput = wrapper.instance().handleDestinationAirportInput;
+      expect(searchFields.prop('onDestinationAirportInput')).to.eql(handleDestinationAirportInput);
     });
   });
 
   context('sends the correct props to <SearchAdvanced />', () => {
-    it('passes advancedOptions to SearchAdvanced', () => {
-      wrapper = mount(<App />);
-      const searchAdvanced = wrapper.find(SearchAdvanced);
-      wrapper.setState({ advancedOptions: { alliance: 'oneworld' } });
-      const advancedOptions = wrapper.state('advancedOptions');
-      expect(searchAdvanced.prop('advancedOptions')).to.equal(advancedOptions);
-    });
-
-    it('passes handleAdvancedOptionsInput function to SearchAdvanced', () => {
+    it('passes handleAdvancedOptionsInput function', () => {
       const searchAdvanced = wrapper.find(SearchAdvanced);
       const handleAdvancedOptionsInput = wrapper.instance().handleAdvancedOptionsInput;
       expect(searchAdvanced.prop('onAdvancedOptionsInput')).to.eql(handleAdvancedOptionsInput);
@@ -158,56 +160,150 @@ describe('<App />', () => {
   });
 
   context('sends the correct props to <SearchButton />', () => {
-    it('passes fetchRoute function to SearchButton', () => {
+    it('passes fetchRoute function', () => {
       const searchButton = wrapper.find(SearchButton);
-      const fetchRoutes = wrapper.instance().fetchRoutes;
-      expect(searchButton.prop('onSubmit')).to.eql(fetchRoutes);
+      const createQuery = wrapper.instance().createQuery;
+      expect(searchButton.prop('onSubmit')).to.eql(createQuery);
     });
   });
 
-  context('sends the correct props to <RouteMap />', () => {
-    it('passes selectedRoute to routeMap', () => {
-      wrapper = mount(<App />);
-      // first add routes so that RouteMap is rendered
-      wrapper.setState({ routes });
-      const routeMap = wrapper.find(RouteMap);
-      wrapper.setState({ selectedRoute: routes[0] });
-      const selectedRoute = wrapper.state('selectedRoute');
-      expect(routeMap.prop('selectedRoute')).to.equal(selectedRoute);
-    });
-  });
-
-  context('sends the correct props to <RouteList />', () => {
-    it('passes routes to routeList', () => {
-      wrapper = mount(<App />);
-      wrapper.setState({ routes });
-      const routeList = wrapper.find(RouteList);
-      expect(routeList.prop('routes')).to.eql(wrapper.state('routes'));
+  context('sends the correct props to <RouteListNonstop />', () => {
+    it('passes handleErrorMessage function', () => {
+      wrapper = shallow(wrapWithProvider(<App />)).shallow();
+      wrapper.setState({ query });
+      const routeListNonstop = wrapper.find(RouteListNonstop);
+      const handleErrorMessage = wrapper.instance().handleErrorMessage;
+      expect(routeListNonstop.prop('onErrorMessage')).to.eql(handleErrorMessage);
     });
 
-    it('passes selectedRoute to routeList', () => {
-      wrapper = mount(<App />);
-      // first add routes so that RouteList is rendered
+    it('passes airline only if it exists', () => {
+      wrapper = shallow(wrapWithProvider(<App />)).shallow();
       wrapper.setState({
-        routes,
-        selectedRoute: routes[0],
+        query: {
+          sourceAirport: 'SMF',
+          destinationAirport: 'CDG',
+          advancedOptions: {
+            stops: 0,
+            airline: '',
+            alliance: 'none',
+          },
+        },
       });
-      const routeList = wrapper.find(RouteList);
-      const selectedRouteId = wrapper.state('selectedRoute').nodeId;
-      expect(routeList.prop('selectedRouteId')).to.eql(selectedRouteId);
+      let routeListNonstop = wrapper.find(RouteListNonstop);
+      expect(routeListNonstop.prop('airline')).to.be.undefined;
+      wrapper.setState({
+        query: {
+          sourceAirport: 'SMF',
+          destinationAirport: 'CDG',
+          advancedOptions: {
+            stops: 0,
+            airline: 'AA',
+            alliance: 'none',
+          },
+        },
+      });
+      routeListNonstop = wrapper.find(RouteListNonstop);
+      expect(routeListNonstop.prop('airline')).to.equal('AA');
     });
 
-    it('passes handleSelectedRouteInput function to RouteList', () => {
-      // first add routes so that RouteList is rendered
-      wrapper.setState({ routes });
-      const routeList = wrapper.find(RouteList);
-      const handleSelectedRouteInput = wrapper.instance().handleSelectedRouteInput;
-      expect(routeList.prop('onSelectedRouteInput')).to.eql(handleSelectedRouteInput);
+    it('passes sourceAirport only if it exists', () => {
+      wrapper = shallow(wrapWithProvider(<App />)).shallow();
+      wrapper.setState({
+        query: {
+          sourceAirport: '',
+          destinationAirport: 'CDG',
+          advancedOptions: {
+            stops: 0,
+            airline: '',
+            alliance: 'none',
+          },
+        },
+      });
+      let routeListNonstop = wrapper.find(RouteListNonstop);
+      expect(routeListNonstop.prop('sourceAirport')).to.be.undefined;
+      wrapper.setState({
+        query: {
+          sourceAirport: 'SMF',
+          destinationAirport: 'CDG',
+          advancedOptions: {
+            stops: 0,
+            airline: 'AA',
+            alliance: 'none',
+          },
+        },
+      });
+      routeListNonstop = wrapper.find(RouteListNonstop);
+      expect(routeListNonstop.prop('sourceAirport')).to.equal('SMF');
+    });
+
+    it('passes destinationAirport only if it exists', () => {
+      wrapper = shallow(wrapWithProvider(<App />)).shallow();
+      wrapper.setState({
+        query: {
+          sourceAirport: 'SMF',
+          destinationAirport: '',
+          advancedOptions: {
+            stops: 0,
+            airline: '',
+            alliance: 'none',
+          },
+        },
+      });
+      let routeListNonstop = wrapper.find(RouteListNonstop);
+      expect(routeListNonstop.prop('destinationAirport')).to.be.undefined;
+      wrapper.setState({
+        query: {
+          sourceAirport: 'SMF',
+          destinationAirport: 'CDG',
+          advancedOptions: {
+            stops: 0,
+            airline: 'AA',
+            alliance: 'none',
+          },
+        },
+      });
+      routeListNonstop = wrapper.find(RouteListNonstop);
+      expect(routeListNonstop.prop('destinationAirport')).to.equal('CDG');
     });
   });
 
-  context('fetchRoutes function', () => {
-    it('validates that there is departure or destination city, else throws error');
-    it('async queries GraphQL for data and adds fetched routes to state');
+  // FUNCTION LOGIC
+  context('createQuery function', () => {
+    it('throws error if no source or destination airport provided', () => {
+      wrapper.instance().createQuery();
+      expect(wrapper.state('errorMessage').length).to.be.greaterThan(0);
+    });
+    
+    it('sets query in components state', () => {
+      wrapper.setState({
+        sourceAirport: 'SMF',
+        destinationAirport: 'CDG',
+        advancedOptions: {
+          stops: '0',
+          airline: 'all',
+          alliance: 'none',
+        },
+      });
+      wrapper.instance().createQuery();
+      const queryExpected = {
+        sourceAirport: 'SMF',
+        destinationAirport: 'CDG',
+        advancedOptions: {
+          stops: 0,
+          airline: '',
+          alliance: '',
+        },
+      };
+      expect(wrapper.state('query')).to.eql(queryExpected);
+    });
+  });
+
+  context('renderRouteList function', () => {
+    it('returns <RouteListNonstop /> if query stops is set to 0');
+    it('returns <RouteListOneStop /> if query stops is set to 1');
+    it('returns <RouteListTwoStops /> if query stops is set to 2');
+    it('returns <RouteListThreeStops /> if query stops is set to 3');
+    it('returns <RouteListFourStops /> if query stops is set to 4');
+    it('returns <RouteListFiveStops /> if query stops is set to 5');
   });
 });

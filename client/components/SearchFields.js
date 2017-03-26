@@ -3,16 +3,16 @@ import React, { Component } from 'react';
 class SearchFields extends Component {
   constructor(props) {
     super(props);
-    this.setDepartureCity = this.setDepartureCity.bind(this);
-    this.setDestinationCity = this.setDestinationCity.bind(this);
+    this.setSourceAirport = this.setSourceAirport.bind(this);
+    this.setDestinationAirport = this.setDestinationAirport.bind(this);
   }
 
-  setDepartureCity(event) {
-    this.props.onDepartureCityInput(event.target.value);
+  setSourceAirport(event) {
+    this.props.onSourceAirportInput(event.target.value);
   }
 
-  setDestinationCity(event) {
-    this.props.onDestinationCityInput(event.target.value);
+  setDestinationAirport(event) {
+    this.props.onDestinationAirportInput(event.target.value);
   }
 
   render() {
@@ -22,17 +22,17 @@ class SearchFields extends Component {
         <input
           id="departure"
           type="text"
-          value={this.props.departureCity}
+          value={this.props.sourceAirport}
           placeholder="Departure"
-          onChange={this.setDepartureCity}
+          onChange={this.setSourceAirport}
         />
         <label htmlFor="destination">Destination</label>
         <input
           id="destination"
           type="text"
-          value={this.props.destinationCity}
+          value={this.props.destinationAirport}
           placeholder="Destination"
-          onChange={this.setDestinationCity}
+          onChange={this.setDestinationAirport}
         />
       </div>
     );
@@ -40,10 +40,10 @@ class SearchFields extends Component {
 }
 
 SearchFields.propTypes = {
-  departureCity: React.PropTypes.string.isRequired,
-  destinationCity: React.PropTypes.string.isRequired,
-  onDepartureCityInput: React.PropTypes.func.isRequired,
-  onDestinationCityInput: React.PropTypes.func.isRequired,
+  sourceAirport: React.PropTypes.string.isRequired,
+  destinationAirport: React.PropTypes.string.isRequired,
+  onSourceAirportInput: React.PropTypes.func.isRequired,
+  onDestinationAirportInput: React.PropTypes.func.isRequired,
 };
 
 export default SearchFields;

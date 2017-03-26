@@ -1,20 +1,33 @@
 import React, { Component } from 'react';
+import RouteMap from './RouteMap';
 
 class RouteList extends Component {
   constructor(props) {
     super(props);
-    this.handleClick = this.handleClick.bind(this);
+
+    this.state = { selectedRoute: {} };
+
+    this.handleSelectRoute = this.handleSelectRoute.bind(this);
     this.renderRoutes = this.renderRoutes.bind(this);
   }
 
-  handleClick(route) {
-    this.props.onSelectedRouteInput(route);
+  handleSelectRoute(route) {
+    this.setState({ selectedRoute: route });
   }
 
   renderRoutes() {
-    const selectedRouteId = this.props.selectedRouteId;
+    const { routes } = this.props;
+    const { selectedRoute } = this.state;
+    let selectedRouteId = '';
 
-    return this.props.routes.map((route, index) => {
+    if (selectedRoute) {
+      if (selectedRoute.nodeId) {
+        selectedRouteId = selectedRoute.nodeId;
+      }
+    }
+
+    return routes.map((route, index) => {
+      // Highlight the selected route
       let className;
       if (!selectedRouteId) {
         if (index === 0) {
@@ -32,7 +45,7 @@ class RouteList extends Component {
         <li
           key={route.nodeId}
           className={className}
-          onClick={() => this.handleClick(route)}
+          onClick={() => this.handleSelectRoute(route)}
         >
           {route.sourceAirport} to {route.destinationAirport}
         </li>
@@ -42,22 +55,22 @@ class RouteList extends Component {
 
   render() {
     return (
-      <ul>
-        {this.renderRoutes()}
-      </ul>
+      <div>
+        <RouteMap selectedRoute={this.state.selectedRoute} />
+        <ul>
+          {this.renderRoutes()}ROUTES LIST IS HERE!
+        </ul>
+      </div>
     );
   }
 }
 
 RouteList.defaultProps = {
   routes: [],
-  selectedRouteId: '',
 };
 
 RouteList.propTypes = {
-  routes: React.PropTypes.arrayOf(React.PropTypes.object),
-  selectedRouteId: React.PropTypes.string,
-  onSelectedRouteInput: React.PropTypes.func.isRequired,
+  routes: React.PropTypes.arrayOf(React.PropTypes.object).isRequired,
 };
 
 export default RouteList;

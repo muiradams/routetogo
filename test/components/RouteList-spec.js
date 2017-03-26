@@ -4,11 +4,18 @@ import { expect } from 'chai';
 import { shallow } from 'enzyme';
 import { spy } from 'sinon';
 import RouteList from '../../client/components/RouteList';
+import RouteMap from '../../client/components/RouteMap';
 
 describe('<RouteList />', () => {
   let wrapper;
   const onSelectedRouteInput = () => {};
-  const props = { onSelectedRouteInput };
+  const onErrorMessage = () => {};
+  const props = { onSelectedRouteInput, onErrorMessage };
+  const selectedRoute = {
+    nodeId: 'WyJyb3V0ZXMiLDU1NzY4XQ==',
+    sourceAirport: 'SFO',
+    destinationAirport: 'CDG',
+  };
   const seedData = [
     {
       nodeId: 'WyJyb3V0ZXMiLDU1NzY4XQ==',
@@ -101,6 +108,17 @@ describe('<RouteList />', () => {
     expect(wrapper).to.have.length(1);
   });
 
+  it('shows a <RouteMap /> component', () => {
+    expect(wrapper.find(RouteMap)).to.have.length(1);
+  });
+
+  it('passes selectedRoute to <RouteMap /> as props', () => {
+    wrapper.setState({ selectedRoute });
+    const routeMap = wrapper.find(RouteMap);
+    const selectedRouteState = wrapper.state('selectedRoute');
+    expect(routeMap.prop('selectedRoute')).to.equal(selectedRouteState);
+  });
+
   it('renders zero routes', () => {
     wrapper = shallow(<RouteList {...props} />);
     expect(wrapper.find('li')).to.have.length(0);
@@ -125,12 +143,9 @@ describe('<RouteList />', () => {
     expect(wrapper.find('li.highlight')).to.have.length(1);
   });
 
-  it('should call onSelectedRouteInput with correct route when route is clicked', () => {
-    const setSelectedRouteSpy = spy();
-    wrapper = shallow(<RouteList routes={seedData} onSelectedRouteInput={setSelectedRouteSpy} />);
+  it('should set selectedRoute state with correct route when route is clicked', () => {
     const secondRoute = wrapper.find('li').at(1);
     secondRoute.simulate('click');
-    expect(setSelectedRouteSpy.calledOnce).to.equal(true);
-    expect(setSelectedRouteSpy.calledWith(seedData[1])).to.equal(true);
+    expect(wrapper.state('selectedRoute')).to.equal(seedData[1]);
   });
 });

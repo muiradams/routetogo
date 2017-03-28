@@ -2,9 +2,9 @@
 import React from 'react';
 import { expect } from 'chai';
 import { shallow } from 'enzyme';
-import { spy } from 'sinon';
 import RouteList from '../../client/components/RouteList';
 import RouteMap from '../../client/components/RouteMap';
+import Route from '../../client/components/Route';
 
 describe('<RouteList />', () => {
   let wrapper;
@@ -16,90 +16,42 @@ describe('<RouteList />', () => {
     sourceAirport: 'SFO',
     destinationAirport: 'CDG',
   };
-  const seedData = [
-    {
-      nodeId: 'WyJyb3V0ZXMiLDU1NzY4XQ==',
-      sourceAirport: 'ACV',
-      destinationAirport: 'CEC',
-      airlineByAirlineId: {
-        name: 'United Airlines',
-      },
-      airportBySourceAirportId: {
-        nodeId: 'WyJhaXJwb3J0cyIsNDM4NF0=',
-        name: 'Arcata Airport',
-        iata: 'ACV',
-        city: 'Arcata CA',
-        country: 'United States',
-        latitude: 40.978099822998,
-        longitude: -124.109001159668,
-      },
-      airportByDestinationAirportId: {
-        nodeId: 'WyJhaXJwb3J0cyIsNTcyN10=',
-        name: 'Jack Mc Namara Field Airport',
-        iata: 'CEC',
-        city: 'Crescent City',
-        country: 'United States',
-        latitude: 41.78020096,
-        longitude: -124.2369995,
-      },
+  const routes = [{
+    nodeId: 'WyJyb3V0ZXMiLDU1NzY4XQ==',
+    airline: 'United Airlines',
+    airports: [{
+      iata: 'ACV',
+      name: 'Arcata Airport',
+      latitude: 40.978099822998,
+      longitude: -124.109001159668,
     },
     {
-      nodeId: 'WyJyb3V0ZXMiLDU1NzY5XQ==',
-      sourceAirport: 'ACV',
-      destinationAirport: 'SFO',
-      airlineByAirlineId: {
-        name: 'United Airlines',
-      },
-      airportBySourceAirportId: {
-        nodeId: 'WyJhaXJwb3J0cyIsNDM4NF0=',
-        name: 'Arcata Airport',
-        iata: 'ACV',
-        city: 'Arcata CA',
-        country: 'United States',
-        latitude: 40.978099822998,
-        longitude: -124.109001159668,
-      },
-      airportByDestinationAirportId: {
-        nodeId: 'WyJhaXJwb3J0cyIsMzQ2OV0=',
-        name: 'San Francisco International Airport',
-        iata: 'SFO',
-        city: 'San Francisco',
-        country: 'United States',
-        latitude: 37.6189994812012,
-        longitude: -122.375,
-      },
+      iata: 'CEC',
+      name: 'Jack Mc Namara Field Airport',
+      latitude: 41.78020096,
+      longitude: -124.2369995,
+    }],
+  },
+  {
+    nodeId: 'WyJyb3V0ZXMiLDU1NzY5XQ==',
+    airline: 'United Airlines',
+    airports: [{
+      iata: 'ACV',
+      name: 'Arcata Airport',
+      latitude: 40.978099822998,
+      longitude: -124.109001159668,
     },
     {
-      nodeId: 'WyJyb3V0ZXMiLDU1NzcwXQ==',
-      sourceAirport: 'ACV',
-      destinationAirport: 'SMF',
-      airlineByAirlineId: {
-        name: 'United Airlines',
-      },
-      airportBySourceAirportId: {
-        nodeId: 'WyJhaXJwb3J0cyIsNDM4NF0=',
-        name: 'Arcata Airport',
-        iata: 'ACV',
-        city: 'Arcata CA',
-        country: 'United States',
-        latitude: 40.978099822998,
-        longitude: -124.109001159668,
-      },
-      airportByDestinationAirportId: {
-        nodeId: 'WyJhaXJwb3J0cyIsMzgxN10=',
-        name: 'Sacramento International Airport',
-        iata: 'SMF',
-        city: 'Sacramento',
-        country: 'United States',
-        latitude: 38.6954002380371,
-        longitude: -121.591003417969,
-      },
-    },
-  ];
+      iata: 'SFO',
+      name: 'San Francisco International Airport',
+      latitude: 37.6189994812012,
+      longitude: -122.375,
+    }],
+  }];
 
   beforeEach(() => {
     wrapper = shallow(<RouteList
-      routes={seedData}
+      routes={routes}
       onSelectedRouteInput={onSelectedRouteInput}
     />);
   });
@@ -130,22 +82,27 @@ describe('<RouteList />', () => {
   });
 
   it('renders routes', () => {
-    expect(wrapper.find('li')).to.have.length(3);
+    expect(wrapper.find(Route)).to.have.length(2);
+  });
+
+  it('passes route to <Route /> as a prop', () => {
+    const route = wrapper.find(Route).at(0);
+    expect(route.prop('route')).to.eql(routes[0]);
   });
 
   it('highlights the first route if selectedRouteId prop is empty', () => {
-    wrapper = shallow(<RouteList routes={seedData} {...props} />);
+    wrapper = shallow(<RouteList routes={routes} {...props} />);
     expect(wrapper.find('li').at(0)).to.have.className('highlight');
   });
 
   it('highlights one selected route based on selectedRouteId prop', () => {
-    wrapper = shallow(<RouteList routes={seedData} selectedRouteId={'WyJyb3V0ZXMiLDU1NzcwXQ=='} {...props} />);
+    wrapper = shallow(<RouteList routes={routes} selectedRouteId={'WyJyb3V0ZXMiLDU1NzcwXQ=='} {...props} />);
     expect(wrapper.find('li.highlight')).to.have.length(1);
   });
 
   it('should set selectedRoute state with correct route when route is clicked', () => {
     const secondRoute = wrapper.find('li').at(1);
     secondRoute.simulate('click');
-    expect(wrapper.state('selectedRoute')).to.equal(seedData[1]);
+    expect(wrapper.state('selectedRoute')).to.equal(routes[1]);
   });
 });

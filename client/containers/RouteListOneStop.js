@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import { graphql } from 'react-apollo';
 import RouteList from '../components/RouteList';
-import nonstop from '../queries/nonstop';
+import oneStop from '../queries/onestop';
 
-export class RouteListNonstopComponent extends Component {
+export class RouteListOneStopComponent extends Component {
   constructor(props) {
     super(props);
     this.createRoutesFromData = this.createRoutesFromData.bind(this);
@@ -11,7 +11,7 @@ export class RouteListNonstopComponent extends Component {
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.routeData.allRoutes.nodes.length === 0) {
-      this.props.onErrorMessage('No Routes Found. Please Try Different Search Terms.');
+      this.props.onErrorMessage('No routes found. Please try different search terms.');
     }
   }
 
@@ -61,7 +61,7 @@ export class RouteListNonstopComponent extends Component {
   }
 }
 
-RouteListNonstopComponent.defaultProps = {
+RouteListOneStopComponent.defaultProps = {
   airline: '',
   sourceAirport: '',
   destinationAirport: '',
@@ -69,7 +69,7 @@ RouteListNonstopComponent.defaultProps = {
   selectedRouteId: '',
 };
 
-RouteListNonstopComponent.propTypes = {
+RouteListOneStopComponent.propTypes = {
   airline: React.PropTypes.string,
   sourceAirport: React.PropTypes.string,
   destinationAirport: React.PropTypes.string,
@@ -80,9 +80,9 @@ RouteListNonstopComponent.propTypes = {
   onErrorMessage: React.PropTypes.func.isRequired,
 };
 
-export default graphql(nonstop, {
+export default graphql(oneStop, {
   name: 'routeData',
   options: ({ airline, sourceAirport, destinationAirport }) => ({
     variables: { airline, sourceAirport, destinationAirport },
   }),
-})(RouteListNonstopComponent);
+})(RouteListOneStopComponent);

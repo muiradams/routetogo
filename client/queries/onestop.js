@@ -1,7 +1,7 @@
 import { gql } from 'react-apollo';
 
 export default gql`
-  query nonstop($airline: String, $sourceAirport: String, $destinationAirport: String){
+  query oneway($airline: String, $sourceAirport: String, $destinationAirport: String){
     allRoutes(condition: {
       airline: $airline, 
       sourceAirport: $sourceAirport, 

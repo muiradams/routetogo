@@ -8,8 +8,8 @@ import App from '../../client/components/App';
 import SearchFields from '../../client/components/SearchFields';
 import SearchAdvanced from '../../client/components/SearchAdvanced';
 import SearchButton from '../../client/components/SearchButton';
-import RouteMap from '../../client/components/RouteMap';
 import RouteListNonstop from '../../client/containers/RouteListNonstop';
+import RouteListOneStop from '../../client/containers/RouteListOneStop';
 
 describe('<App />', () => {
   let wrapper;
@@ -56,17 +56,6 @@ describe('<App />', () => {
 
   it('shows a <SearchButton /> component', () => {
     expect(wrapper.find(SearchButton)).to.have.length(1);
-  });
-
-  it('shows a <RouteListNonstop /> component if a query exists', () => {
-    wrapper = shallow(wrapWithProvider(<App />)).shallow();
-    wrapper.setState({ query });
-    expect(wrapper.find(RouteListNonstop)).to.have.length(1);
-  });
-
-  it('doesn\'t show <RouteListNonstop /> component if there isn\'t a query', () => {
-    wrapper = shallow(wrapWithProvider(<App />)).shallow();
-    expect(wrapper.find(RouteListNonstop)).to.have.length(0);
   });
 
   // INITIALIZES THE STATE
@@ -269,11 +258,22 @@ describe('<App />', () => {
 
   // FUNCTION LOGIC
   context('createQuery function', () => {
-    it('throws error if no source or destination airport provided', () => {
+    it('sets errorMessage if no source or destination airport provided', () => {
       wrapper.instance().createQuery();
       expect(wrapper.state('errorMessage').length).to.be.greaterThan(0);
     });
-    
+
+    it('sets errorMessage if stops > 0, but there is not a source & destination set', () => {
+      wrapper.setState({
+        sourceAirport: 'SMF',
+        advancedOptions: {
+          stops: '1',
+        },
+      });
+      wrapper.instance().createQuery();
+      expect(wrapper.state('errorMessage').length).to.be.greaterThan(0);
+    });
+
     it('sets query in components state', () => {
       wrapper.setState({
         sourceAirport: 'SMF',
@@ -299,8 +299,31 @@ describe('<App />', () => {
   });
 
   context('renderRouteList function', () => {
-    it('returns <RouteListNonstop /> if query stops is set to 0');
-    it('returns <RouteListOneStop /> if query stops is set to 1');
+    it('doesn\'t show any <RouteList... /> components if there isn\'t a query', () => {
+      wrapper = shallow(wrapWithProvider(<App />)).shallow();
+      expect(wrapper.find(RouteListNonstop)).to.have.length(0);
+    });
+
+    it('returns <RouteListNonstop /> if query stops is set to 0', () => {
+      wrapper = shallow(wrapWithProvider(<App />)).shallow();
+      wrapper.setState({ query });
+      expect(wrapper.find(RouteListNonstop)).to.have.length(1);
+    });
+
+    it('returns <RouteListOneStop /> if query stops is set to 1', () => {
+      wrapper = shallow(wrapWithProvider(<App />)).shallow();
+      wrapper.setState({ query: {
+        sourceAirport: 'SMF',
+        destinationAirport: 'CDG',
+        advancedOptions: {
+          stops: 1,
+          airline: 'all',
+          alliance: 'none',
+        },
+      } });
+      expect(wrapper.find(RouteListOneStop)).to.have.length(1);
+    });
+
     it('returns <RouteListTwoStops /> if query stops is set to 2');
     it('returns <RouteListThreeStops /> if query stops is set to 3');
     it('returns <RouteListFourStops /> if query stops is set to 4');

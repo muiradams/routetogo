@@ -3,6 +3,7 @@ import SearchFields from './SearchFields';
 import SearchAdvanced from './SearchAdvanced';
 import SearchButton from './SearchButton';
 import RouteListNonstop from '../containers/RouteListNonstop';
+import RouteListOneStop from '../containers/RouteListOneStop';
 
 export default class App extends Component {
   constructor(props) {
@@ -65,7 +66,12 @@ export default class App extends Component {
     }
 
     if (!sourceAirport && !destinationAirport) {
-      this.setState({ errorMessage: 'Departure or Destination Airport Must Be Provided.' });
+      this.setState({ errorMessage: 'Either departure or destination airport must be provided for nonstop routes.' });
+      return;
+    }
+
+    if (stops > 0 && (!sourceAirport || !destinationAirport)) {
+      this.setState({ errorMessage: 'Both departure and destination airports must be provided if there are stops.' });
       return;
     }
 
@@ -83,49 +89,60 @@ export default class App extends Component {
   }
 
   renderRouteList() {
-    let {
-      sourceAirport,
-      destinationAirport,
-      advancedOptions: {
-        stops,
-        airline,
-        alliance,
-      },
-    } = this.state.query;
-
-    sourceAirport = sourceAirport.toUpperCase();
-    destinationAirport = destinationAirport.toUpperCase();
-
-    const props = { onErrorMessage: this.handleErrorMessage };
-
-    let queryProps;
-
-    if (sourceAirport) {
-      if (destinationAirport) {
-        if (airline) {
-          queryProps = { airline, sourceAirport, destinationAirport };
-        } else {
-          queryProps = { sourceAirport, destinationAirport };
-        }
-      } else if (airline) {
-        queryProps = { airline, sourceAirport };
-      } else {
-        queryProps = { sourceAirport };
-      }
-    } else if (airline) {
-      queryProps = { airline, destinationAirport };
-    } else {
-      queryProps = { destinationAirport };
-    }
-
-    return <RouteListNonstop {...props} {...queryProps} />;
-  }
-
-  render() {
     function isEmpty(object) {
       return Object.keys(object).length === 0;
     }
 
+    if (!isEmpty(this.state.query)) {
+      let {
+        sourceAirport,
+        destinationAirport,
+        advancedOptions: {
+          stops,
+          airline,
+          alliance,
+        },
+      } = this.state.query;
+
+      sourceAirport = sourceAirport.toUpperCase();
+      destinationAirport = destinationAirport.toUpperCase();
+
+      const props = { onErrorMessage: this.handleErrorMessage };
+
+      let queryProps;
+
+      if (sourceAirport) {
+        if (destinationAirport) {
+          if (airline) {
+            queryProps = { airline, sourceAirport, destinationAirport };
+          } else {
+            queryProps = { sourceAirport, destinationAirport };
+          }
+        } else if (airline) {
+          queryProps = { airline, sourceAirport };
+        } else {
+          queryProps = { sourceAirport };
+        }
+      } else if (airline) {
+        queryProps = { airline, destinationAirport };
+      } else {
+        queryProps = { destinationAirport };
+      }
+
+      if (stops === 0) {
+        return <RouteListNonstop {...props} {...queryProps} />;
+      }
+
+      if (stops === 1) {
+        return <RouteListOneStop {...props} {...queryProps} />;
+      }
+    }
+
+    // A query is not set yet, so display nothing
+    return null;
+  }
+
+  render() {
     return (
       <div>
         <h1 id="site-title">ROUTE to GO</h1>
@@ -140,11 +157,9 @@ export default class App extends Component {
           onAdvancedOptionsInput={this.handleAdvancedOptionsInput}
         />
         <SearchButton onSubmit={this.createQuery} />
-        {(!isEmpty(this.state.query)) &&
-          <div>
-            {this.renderRouteList()}
-          </div>
-        }
+        <div>
+          {this.renderRouteList()}
+        </div>
       </div>
     );
   }

@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import RouteMap from './RouteMap';
+import Route from './Route';
 
 class RouteList extends Component {
   constructor(props) {
@@ -47,7 +48,7 @@ class RouteList extends Component {
           className={className}
           onClick={() => this.handleSelectRoute(route)}
         >
-          {route.sourceAirport} to {route.destinationAirport}
+          <Route route={route} />
         </li>
       );
     });
@@ -58,7 +59,7 @@ class RouteList extends Component {
       <div>
         <RouteMap selectedRoute={this.state.selectedRoute} />
         <ul>
-          {this.renderRoutes()}ROUTES LIST IS HERE!
+          {this.renderRoutes()}
         </ul>
       </div>
     );

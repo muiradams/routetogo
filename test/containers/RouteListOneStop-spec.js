@@ -3,10 +3,10 @@ import React from 'react';
 import { expect } from 'chai';
 import { shallow } from 'enzyme';
 import { spy } from 'sinon';
-import { RouteListNonstopComponent } from '../../client/containers/RouteListNonstop';
+import { RouteListOneStopComponent } from '../../client/containers/RouteListOneStop';
 import RouteList from '../../client/components/RouteList';
 
-describe('<RouteListNonstop />', () => {
+describe('<RouteListOneStop />', () => {
   let wrapper;
   const onErrorMessage = () => {};
   const routeDataLoading = {
@@ -64,7 +64,7 @@ describe('<RouteListNonstop />', () => {
   };
 
   beforeEach(() => {
-    wrapper = shallow(<RouteListNonstopComponent
+    wrapper = shallow(<RouteListOneStopComponent
       routeData={routeDataLoaded}
       onErrorMessage={onErrorMessage}
     />);
@@ -75,7 +75,7 @@ describe('<RouteListNonstop />', () => {
   });
 
   it('renders a div if the routeData is loading', () => {
-    wrapper = shallow(<RouteListNonstopComponent
+    wrapper = shallow(<RouteListOneStopComponent
       routeData={routeDataLoading}
       onErrorMessage={onErrorMessage}
     />);
@@ -83,7 +83,7 @@ describe('<RouteListNonstop />', () => {
   });
 
   it('renders a <RouteList /> if there are routes', () => {
-    wrapper = shallow(<RouteListNonstopComponent
+    wrapper = shallow(<RouteListOneStopComponent
       routeData={routeDataLoaded}
       onErrorMessage={onErrorMessage}
     />);
@@ -92,7 +92,7 @@ describe('<RouteListNonstop />', () => {
 
   it('should send an error message to onErrorMessage when there are no routes', () => {
     const handleErrorMessageSpy = spy();
-    wrapper = shallow(<RouteListNonstopComponent
+    wrapper = shallow(<RouteListOneStopComponent
       routeData={routeDataLoading}
       onErrorMessage={handleErrorMessageSpy}
     />);
@@ -101,7 +101,7 @@ describe('<RouteListNonstop />', () => {
   });
 
   it('passes routes to <RouteList /> as a prop', () => {
-    wrapper = shallow(<RouteListNonstopComponent
+    wrapper = shallow(<RouteListOneStopComponent
       routeData={routeDataEmpty}
       onErrorMessage={onErrorMessage}
     />);

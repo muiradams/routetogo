@@ -40,7 +40,7 @@ describe('<SearchAdvanced />', () => {
   });
 
   // UPDATES THE STATE
-  context('select elements update the state on change', () => {
+  context('<select> elements update the state on change', () => {
     it('stops', () => {
       wrapper.instance().handleChange({ target: { name: 'stops', value: '3' } });
       expect(wrapper.state('stops')).to.eql('3');

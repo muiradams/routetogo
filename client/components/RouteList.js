@@ -55,14 +55,18 @@ class RouteList extends Component {
   }
 
   render() {
-    return (
-      <div>
-        <RouteMap selectedRoute={this.state.selectedRoute} />
-        <ul>
-          {this.renderRoutes()}
-        </ul>
-      </div>
-    );
+    if(this.props.routes.length > 0) {
+      return (
+        <div>
+          <RouteMap selectedRoute={this.state.selectedRoute} />
+          <ul>
+            {this.renderRoutes()}
+          </ul>
+        </div>
+      );
+    } else {
+      return null;
+    }
   }
 }
 

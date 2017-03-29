@@ -40,14 +40,22 @@ describe('<RouteListOneStop />', () => {
           iata: 'CEC',
           latitude: 41.78020096,
           longitude: -124.2369995,
-          nextAirport: {
+          finalAirports: {
             nodes: [
               {
-                finalAirport: {
+                airport: {
                   iata: 'DEN',
                   name: 'Denver International Airport',
                   latitude: 39.861698150635,
                   longitude: -104.672996521,
+                },
+              },
+              {
+                airport: {
+                  iata: 'ORD',
+                  name: 'Chicago O\'Hare International Airport',
+                  latitude: 41.97859955,
+                  longitude: -87.90480042,
                 },
               },
             ],
@@ -65,19 +73,27 @@ describe('<RouteListOneStop />', () => {
           latitude: 40.978099822998,
           longitude: -124.109001159668,
         },
-        airportByDestinationAirportId: {
+        secondAirport: {
           name: 'San Francisco International Airport',
           iata: 'SFO',
           latitude: 37.6189994812012,
           longitude: -122.375,
-          nextAirport: {
+          finalAirports: {
             nodes: [
               {
-                finalAirport: {
+                airport: {
                   iata: 'LAX',
                   name: 'Los Angeles International Airport',
                   latitude: 33.94250107,
                   longitude: -118.4079971,
+                },
+              },
+              {
+                airport: {
+                  iata: 'ORD',
+                  name: 'Chicago O\'Hare International Airport',
+                  latitude: 41.97859955,
+                  longitude: -87.90480042,
                 },
               },
             ],
@@ -135,22 +151,6 @@ describe('<RouteListOneStop />', () => {
 
   it('createRoutesFromData takes routeData and converts it into routes', () => {
     const expectedRoutes = [{
-      nodeId: 'WyJyb3V0ZXMiLDU1NzY4XQ==',
-      airline: 'United Airlines',
-      airports: [{
-        iata: 'ACV',
-        name: 'Arcata Airport',
-        latitude: 40.978099822998,
-        longitude: -124.109001159668,
-      },
-      {
-        iata: 'CEC',
-        name: 'Jack Mc Namara Field Airport',
-        latitude: 41.78020096,
-        longitude: -124.2369995,
-      }],
-    },
-    {
       nodeId: 'WyJyb3V0ZXMiLDU1NzY5XQ==',
       airline: 'United Airlines',
       airports: [{
@@ -164,8 +164,19 @@ describe('<RouteListOneStop />', () => {
         name: 'San Francisco International Airport',
         latitude: 37.6189994812012,
         longitude: -122.375,
+      },
+      {
+        iata: 'LAX',
+        name: 'Los Angeles International Airport',
+        latitude: 33.94250107,
+        longitude: -118.4079971,
       }],
     }];
+    wrapper = shallow(<RouteListOneStopComponent
+      routeData={routeDataLoaded}
+      destinationAirport="LAX"
+      onErrorMessage={onErrorMessage}
+    />);
     const routes = wrapper.instance().createRoutesFromData(routeDataLoaded.allRoutes.nodes);
     expect(routes).to.eql(expectedRoutes);
   });

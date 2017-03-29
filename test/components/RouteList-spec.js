@@ -60,7 +60,10 @@ describe('<RouteList />', () => {
     expect(wrapper).to.have.length(1);
   });
 
-  it('shows a <RouteMap /> component', () => {
+  it('shows a <RouteMap /> component only if there are routes', () => {
+    wrapper = shallow(<RouteList />);
+    expect(wrapper.find(RouteMap)).to.have.length(0);
+    wrapper = shallow(<RouteList routes={routes} />);
     expect(wrapper.find(RouteMap)).to.have.length(1);
   });
 

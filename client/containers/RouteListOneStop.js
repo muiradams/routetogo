@@ -16,33 +16,57 @@ export class RouteListOneStopComponent extends Component {
   }
 
   createRoutesFromData(routeData) {
-    // if (routeData.length === 0) {
-    //   return [];
-    // }
+    if (routeData.length === 0) {
+      return [];
+    }
 
-    // return routeData.map((route) => {
-    //   const nodeId = route.nodeId;
-    //   const airline = route.airline.name;
-    //   const sourceAirport = route.sourceAirport;
-    //   const destinationAirport = route.airportByDestinationAirportId;
-    //   const airports = [];
+    const { destinationAirport } = this.props;
 
-    //   airports.push({
-    //     iata: sourceAirport.iata,
-    //     name: sourceAirport.name,
-    //     latitude: sourceAirport.latitude,
-    //     longitude: sourceAirport.longitude,
-    //   });
+    const routes = routeData.map((route) => {
+      const { nodeId, sourceAirport, secondAirport } = route;
+      const airline = route.airline.name;
+      const airports = [];
+      let finalAirports;
 
-    //   airports.push({
-    //     iata: destinationAirport.iata,
-    //     name: destinationAirport.name,
-    //     latitude: destinationAirport.latitude,
-    //     longitude: destinationAirport.longitude,
-    //   });
+      airports.push({
+        iata: sourceAirport.iata,
+        name: sourceAirport.name,
+        latitude: sourceAirport.latitude,
+        longitude: sourceAirport.longitude,
+      });
 
-    //   return { nodeId, airline, airports };
-    // });
+      airports.push({
+        iata: secondAirport.iata,
+        name: secondAirport.name,
+        latitude: secondAirport.latitude,
+        longitude: secondAirport.longitude,
+      });
+
+      if (secondAirport.iata !== destinationAirport) {
+        if (secondAirport.finalAirports) {
+          finalAirports = secondAirport.finalAirports.nodes;
+        } else {
+          return null;
+        }
+
+        const finalAirport = finalAirports.find((airport) => {
+          return airport.airport.iata === destinationAirport;
+        });
+
+        if (!finalAirport) return null;
+
+        airports.push({
+          iata: finalAirport.airport.iata,
+          name: finalAirport.airport.name,
+          latitude: finalAirport.airport.latitude,
+          longitude: finalAirport.airport.longitude,
+        });
+      }
+
+      return { nodeId, airline, airports };
+    });
+
+    return routes.filter(route => (route));
   }
 
   render() {
@@ -82,7 +106,7 @@ RouteListOneStopComponent.propTypes = {
 
 export default graphql(oneStop, {
   name: 'routeData',
-  options: ({ airline, sourceAirport, destinationAirport }) => ({
-    variables: { airline, sourceAirport, destinationAirport },
+  options: ({ airline, sourceAirport }) => ({
+    variables: { airline, sourceAirport },
   }),
 })(RouteListOneStopComponent);

@@ -21,10 +21,8 @@ export class RouteListNonstopComponent extends Component {
     }
 
     return routeData.map((route) => {
-      const nodeId = route.nodeId;
-      const airline = route.airlineByAirlineId.name;
-      const sourceAirport = route.airportBySourceAirportId;
-      const destinationAirport = route.airportByDestinationAirportId;
+      const { nodeId, sourceAirport, destinationAirport } = route;
+      const airline = route.airline.name;
       const airports = [];
 
       airports.push({

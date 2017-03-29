@@ -26,28 +26,40 @@ describe('<RouteListOneStop />', () => {
     allRoutes: {
       nodes: [{
         nodeId: 'WyJyb3V0ZXMiLDU1NzY4XQ==',
-        airlineByAirlineId: {
+        airline: {
           name: 'United Airlines',
         },
-        airportBySourceAirportId: {
+        sourceAirport: {
           name: 'Arcata Airport',
           iata: 'ACV',
           latitude: 40.978099822998,
           longitude: -124.109001159668,
         },
-        airportByDestinationAirportId: {
+        secondAirport: {
           name: 'Jack Mc Namara Field Airport',
           iata: 'CEC',
           latitude: 41.78020096,
           longitude: -124.2369995,
+          nextAirport: {
+            nodes: [
+              {
+                finalAirport: {
+                  iata: 'DEN',
+                  name: 'Denver International Airport',
+                  latitude: 39.861698150635,
+                  longitude: -104.672996521,
+                },
+              },
+            ],
+          },
         },
       },
       {
         nodeId: 'WyJyb3V0ZXMiLDU1NzY5XQ==',
-        airlineByAirlineId: {
+        airline: {
           name: 'United Airlines',
         },
-        airportBySourceAirportId: {
+        sourceAirport: {
           name: 'Arcata Airport',
           iata: 'ACV',
           latitude: 40.978099822998,
@@ -58,6 +70,18 @@ describe('<RouteListOneStop />', () => {
           iata: 'SFO',
           latitude: 37.6189994812012,
           longitude: -122.375,
+          nextAirport: {
+            nodes: [
+              {
+                finalAirport: {
+                  iata: 'LAX',
+                  name: 'Los Angeles International Airport',
+                  latitude: 33.94250107,
+                  longitude: -118.4079971,
+                },
+              },
+            ],
+          },
         },
       }],
     },

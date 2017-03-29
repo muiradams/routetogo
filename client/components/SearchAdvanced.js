@@ -9,6 +9,8 @@ class SearchAdvanced extends Component {
       alliance: 'none',
     };
     this.handleChange = this.handleChange.bind(this);
+    this.airlineFirstOption = this.airlineFirstOption.bind(this);
+    this.allianceFirstOption = this.allianceFirstOption.bind(this);
   }
 
   handleChange(event) {
@@ -24,15 +26,31 @@ class SearchAdvanced extends Component {
       case 'airline':
         if (value !== 'all') this.setState({ alliance: 'none' });
         this.setState({ airline: value });
-        this.props.onAdvancedOptionsInput({ stops, airline: value, alliance });
+        this.props.onAdvancedOptionsInput({ stops, airline: value, alliance: 'none' });
         break;
       case 'alliance':
         if (value !== 'none') this.setState({ airline: 'all' });
         this.setState({ alliance: value });
-        this.props.onAdvancedOptionsInput({ stops, airline, alliance: value });
+        this.props.onAdvancedOptionsInput({ stops, airline: 'all', alliance: value });
         break;
       default:
         break;
+    }
+  }
+
+  airlineFirstOption() {
+    if (this.state.stops === '0') {
+      return <option value="all">All Airlines</option>;
+    } else {
+      return <option value="all">-----</option>;
+    }
+  }
+
+  allianceFirstOption() {
+    if (this.state.stops === '0') {
+      return <option value="none">None</option>;
+    } else {
+      return <option value="none">-----</option>;
     }
   }
 
@@ -60,7 +78,7 @@ class SearchAdvanced extends Component {
           value={this.state.airline}
           onChange={this.handleChange}
         >
-          <option value="all">All Airlines</option>
+          { this.airlineFirstOption() }
           <option value="UA">United Airlines</option>
           <option value="AA">American Airlines</option>
         </select>
@@ -71,7 +89,7 @@ class SearchAdvanced extends Component {
           value={this.state.alliance}
           onChange={this.handleChange}
         >
-          <option value="none">None</option>
+          { this.allianceFirstOption() }
           <option value="staralliance">Star Alliance</option>
           <option value="oneworld">Oneworld</option>
           <option value="skyteam">SkyTeam</option>

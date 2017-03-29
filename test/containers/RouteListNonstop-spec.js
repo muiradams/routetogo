@@ -26,16 +26,16 @@ describe('<RouteListNonstop />', () => {
     allRoutes: {
       nodes: [{
         nodeId: 'WyJyb3V0ZXMiLDU1NzY4XQ==',
-        airlineByAirlineId: {
+        airline: {
           name: 'United Airlines',
         },
-        airportBySourceAirportId: {
+        sourceAirport: {
           name: 'Arcata Airport',
           iata: 'ACV',
           latitude: 40.978099822998,
           longitude: -124.109001159668,
         },
-        airportByDestinationAirportId: {
+        destinationAirport: {
           name: 'Jack Mc Namara Field Airport',
           iata: 'CEC',
           latitude: 41.78020096,
@@ -44,16 +44,16 @@ describe('<RouteListNonstop />', () => {
       },
       {
         nodeId: 'WyJyb3V0ZXMiLDU1NzY5XQ==',
-        airlineByAirlineId: {
+        airline: {
           name: 'United Airlines',
         },
-        airportBySourceAirportId: {
+        sourceAirport: {
           name: 'Arcata Airport',
           iata: 'ACV',
           latitude: 40.978099822998,
           longitude: -124.109001159668,
         },
-        airportByDestinationAirportId: {
+        destinationAirport: {
           name: 'San Francisco International Airport',
           iata: 'SFO',
           latitude: 37.6189994812012,

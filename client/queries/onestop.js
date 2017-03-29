@@ -1,7 +1,7 @@
 import { gql } from 'react-apollo';
 
 export default gql`
-  query oneway($airline: String, $sourceAirport: String, $destinationAirport: String){
+  query onestop($airline: String, $sourceAirport: String, $destinationAirport: String){
     allRoutes(condition: {
       airline: $airline, 
       sourceAirport: $sourceAirport, 
@@ -9,20 +9,32 @@ export default gql`
       }) {
       nodes {
         nodeId
-        airlineByAirlineId {
+        airline: airlineByAirlineId {
           name
         },
-        airportBySourceAirportId {
+        sourceAirport: airportBySourceAirportId {
           iata
           name
           latitude
           longitude
         },
-        airportByDestinationAirportId {
+        secondAirport: airportByDestinationAirportId {
           iata
           name
           latitude
           longitude
+          nextAirport: routesBySourceAirportId (condition: {
+            airline: $airline, 
+            }) {
+            nodes {
+              finalAirport: airportByDestinationAirportId {
+                iata
+                name
+                latitude
+                longitude
+              }
+            }
+          }
         }
       }
     }

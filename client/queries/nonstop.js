@@ -9,16 +9,16 @@ export default gql`
       }) {
       nodes {
         nodeId
-        airlineByAirlineId {
+        airline: airlineByAirlineId {
           name
         },
-        airportBySourceAirportId {
+        sourceAirport: airportBySourceAirportId {
           iata
           name
           latitude
           longitude
         },
-        airportByDestinationAirportId {
+        destinationAirport: airportByDestinationAirportId {
           iata
           name
           latitude

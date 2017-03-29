@@ -58,6 +58,11 @@ describe('<App />', () => {
     expect(wrapper.find(SearchButton)).to.have.length(1);
   });
 
+  it('shows an error message if one exists', () => {
+    wrapper.setState({ errorMessage: 'Error' });
+    expect(wrapper.find('.error')).to.have.length(1);
+  });
+
   // INITIALIZES THE STATE
   context('state', () => {
     it('starts with an empty sourceAirport', () => {
@@ -103,9 +108,9 @@ describe('<App />', () => {
       expect(wrapper.state('advancedOptions')).to.eql({ alliance: 'oneworld' });
     });
 
-    it('adds errorMessage to state', () => {
+    it('adds error to errorMessage state', () => {
       wrapper.instance().handleErrorMessage('Error');
-      expect(wrapper.state('errorMessage')).to.eql('Error');
+      expect(wrapper.state('errorMessage').length).to.be.greaterThan(0);
     });
   });
 
@@ -258,12 +263,35 @@ describe('<App />', () => {
 
   // FUNCTION LOGIC
   context('createQuery function', () => {
-    it('sets errorMessage if no source or destination airport provided', () => {
+    it('clears errorMessage when first run', () => {
+      wrapper.setState({
+        sourceAirport: 'SMF',
+        destinationAirport: 'CDG',
+        advancedOptions: {
+          stops: '1',
+        },
+        errorMessage: '',
+      });
+      wrapper.instance().createQuery();
+      expect(wrapper.state('errorMessage').length).to.be.greaterThan(0);
+      wrapper.setState({
+        sourceAirport: 'SMF',
+        destinationAirport: 'CDG',
+        advancedOptions: {
+          stops: '1',
+          airline: 'UA',
+        },
+      });
+      wrapper.instance().createQuery();
+      expect(wrapper.state('errorMessage').length).to.equal(0);
+    });
+
+    it('adds error to errorMessage if no source or destination airport provided', () => {
       wrapper.instance().createQuery();
       expect(wrapper.state('errorMessage').length).to.be.greaterThan(0);
     });
 
-    it('sets errorMessage if stops > 0, but there is not a source & destination set', () => {
+    it('adds error to errorMessage if stops > 0, but there is not a source AND destination set', () => {
       wrapper.setState({
         sourceAirport: 'SMF',
         advancedOptions: {
@@ -272,6 +300,29 @@ describe('<App />', () => {
       });
       wrapper.instance().createQuery();
       expect(wrapper.state('errorMessage').length).to.be.greaterThan(0);
+    });
+
+    it('adds error to errorMessage if stops > 0, but neither airline nor alliance is set', () => {
+      wrapper.setState({
+        sourceAirport: 'SMF',
+        destinationAirport: 'CDG',
+        advancedOptions: {
+          stops: '1',
+        },
+      });
+      wrapper.instance().createQuery();
+      expect(wrapper.state('errorMessage').length).to.be.greaterThan(0);
+      wrapper.setState({
+        sourceAirport: 'SMF',
+        destinationAirport: 'CDG',
+        advancedOptions: {
+          stops: '1',
+          airline: 'UA',
+        },
+        errorMessage: '',
+      });
+      wrapper.instance().createQuery();
+      expect(wrapper.state('errorMessage').length).to.equal(0);
     });
 
     it('sets query in components state', () => {

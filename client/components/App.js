@@ -22,6 +22,7 @@ export default class App extends Component {
     this.handleAdvancedOptionsInput = this.handleAdvancedOptionsInput.bind(this);
     this.handleErrorMessage = this.handleErrorMessage.bind(this);
     this.createQuery = this.createQuery.bind(this);
+    this.renderErrorMessage = this.renderErrorMessage.bind(this);
     this.renderRouteList = this.renderRouteList.bind(this);
   }
 
@@ -39,7 +40,6 @@ export default class App extends Component {
 
   handleErrorMessage(errorMessage) {
     this.setState({ errorMessage });
-    // console.log('Error: ', errorMessage);
   }
 
   createQuery() {
@@ -50,6 +50,9 @@ export default class App extends Component {
     } = this.state;
     const numStops = Number(stops);
     let airlineQuery;
+
+    // Clear previous error messages
+    this.setState({ errorMessage: '' });
 
     if (airline === 'all') {
       airlineQuery = '';
@@ -66,12 +69,17 @@ export default class App extends Component {
     }
 
     if (!sourceAirport && !destinationAirport) {
-      this.setState({ errorMessage: 'Either departure or destination airport must be provided for nonstop routes.' });
+      this.handleErrorMessage('Either departure or destination airport must be provided for nonstop routes.');
       return;
     }
 
-    if (stops > 0 && (!sourceAirport || !destinationAirport)) {
-      this.setState({ errorMessage: 'Both departure and destination airports must be provided if there are stops.' });
+    if (numStops > 0 && (!sourceAirport || !destinationAirport)) {
+      this.handleErrorMessage('Both departure and destination airports must be provided if there are stops.');
+      return;
+    }
+
+    if (numStops > 0 && !airlineQuery && !allianceQuery) {
+      this.handleErrorMessage('Either an airline or alliance must be provided if there are stops.');
       return;
     }
 
@@ -86,6 +94,16 @@ export default class App extends Component {
     };
 
     this.setState({ query });
+  }
+
+  renderErrorMessage() {
+    const { errorMessage } = this.state;
+
+    if (errorMessage) {
+      return <div className="error">{errorMessage}</div>;
+    }
+
+    return null;
   }
 
   renderRouteList() {
@@ -138,7 +156,7 @@ export default class App extends Component {
       }
     }
 
-    // A query is not set yet, so display nothing
+    // A query is not yet set, so don't display anything
     return null;
   }
 
@@ -158,6 +176,7 @@ export default class App extends Component {
         />
         <SearchButton onSubmit={this.createQuery} />
         <div>
+          {this.renderErrorMessage()}
           {this.renderRouteList()}
         </div>
       </div>

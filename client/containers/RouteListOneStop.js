@@ -16,33 +16,33 @@ export class RouteListOneStopComponent extends Component {
   }
 
   createRoutesFromData(routeData) {
-    if (routeData.length === 0) {
-      return [];
-    }
+    // if (routeData.length === 0) {
+    //   return [];
+    // }
 
-    return routeData.map((route) => {
-      const nodeId = route.nodeId;
-      const airline = route.airlineByAirlineId.name;
-      const sourceAirport = route.airportBySourceAirportId;
-      const destinationAirport = route.airportByDestinationAirportId;
-      const airports = [];
+    // return routeData.map((route) => {
+    //   const nodeId = route.nodeId;
+    //   const airline = route.airline.name;
+    //   const sourceAirport = route.sourceAirport;
+    //   const destinationAirport = route.airportByDestinationAirportId;
+    //   const airports = [];
 
-      airports.push({
-        iata: sourceAirport.iata,
-        name: sourceAirport.name,
-        latitude: sourceAirport.latitude,
-        longitude: sourceAirport.longitude,
-      });
+    //   airports.push({
+    //     iata: sourceAirport.iata,
+    //     name: sourceAirport.name,
+    //     latitude: sourceAirport.latitude,
+    //     longitude: sourceAirport.longitude,
+    //   });
 
-      airports.push({
-        iata: destinationAirport.iata,
-        name: destinationAirport.name,
-        latitude: destinationAirport.latitude,
-        longitude: destinationAirport.longitude,
-      });
+    //   airports.push({
+    //     iata: destinationAirport.iata,
+    //     name: destinationAirport.name,
+    //     latitude: destinationAirport.latitude,
+    //     longitude: destinationAirport.longitude,
+    //   });
 
-      return { nodeId, airline, airports };
-    });
+    //   return { nodeId, airline, airports };
+    // });
   }
 
   render() {

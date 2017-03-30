@@ -10,6 +10,7 @@ import SearchAdvanced from '../../client/components/SearchAdvanced';
 import SearchButton from '../../client/components/SearchButton';
 import RouteListNonstop from '../../client/containers/RouteListNonstop';
 import RouteListOneStop from '../../client/containers/RouteListOneStop';
+import RouteListTwoStops from '../../client/containers/RouteListTwoStops';
 
 describe('<App />', () => {
   let wrapper;
@@ -78,14 +79,14 @@ describe('<App />', () => {
         stops: '0',
         airline: 'all',
         alliance: 'none',
-      }
+      };
       expect(wrapper.state('advancedOptions')).to.eql(advancedOptions);
     });
 
     it('starts with an empty query', () => {
       expect(wrapper.state('query')).to.eql({});
     });
-    
+
     it('starts with an empty errorMessage', () => {
       expect(wrapper.state('errorMessage')).to.eql('');
     });
@@ -361,7 +362,20 @@ describe('<App />', () => {
       expect(wrapper.find(RouteListOneStop)).to.have.length(1);
     });
 
-    it('returns <RouteListTwoStops /> if query stops is set to 2');
+    it('returns <RouteListTwoStops /> if query stops is set to 2', () => {
+      wrapper = shallow(wrapWithProvider(<App />)).shallow();
+      wrapper.setState({ query: {
+        sourceAirport: 'SMF',
+        destinationAirport: 'CDG',
+        advancedOptions: {
+          stops: 2,
+          airline: 'all',
+          alliance: 'none',
+        },
+      } });
+      expect(wrapper.find(RouteListTwoStops)).to.have.length(1);
+    });
+
     it('returns <RouteListThreeStops /> if query stops is set to 3');
     it('returns <RouteListFourStops /> if query stops is set to 4');
     it('returns <RouteListFiveStops /> if query stops is set to 5');

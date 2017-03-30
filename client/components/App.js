@@ -4,6 +4,7 @@ import SearchAdvanced from './SearchAdvanced';
 import SearchButton from './SearchButton';
 import RouteListNonstop from '../containers/RouteListNonstop';
 import RouteListOneStop from '../containers/RouteListOneStop';
+import RouteListTwoStops from '../containers/RouteListTwoStops';
 
 export default class App extends Component {
   constructor(props) {
@@ -50,9 +51,6 @@ export default class App extends Component {
     } = this.state;
     const numStops = Number(stops);
     let airlineQuery;
-
-
-
 
     if (airline === 'all') {
       airlineQuery = '';
@@ -158,6 +156,10 @@ export default class App extends Component {
 
       if (stops === 1) {
         return <RouteListOneStop {...props} {...queryProps} />;
+      }
+
+      if (stops === 2) {
+        return <RouteListTwoStops {...props} {...queryProps} />;
       }
     }
 

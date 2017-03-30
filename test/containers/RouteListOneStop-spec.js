@@ -35,7 +35,7 @@ describe('<RouteListOneStop />', () => {
           latitude: 40.978099822998,
           longitude: -124.109001159668,
         },
-        secondAirport: {
+        firstStop: {
           name: 'Jack Mc Namara Field Airport',
           iata: 'CEC',
           latitude: 41.78020096,
@@ -73,7 +73,7 @@ describe('<RouteListOneStop />', () => {
           latitude: 40.978099822998,
           longitude: -124.109001159668,
         },
-        secondAirport: {
+        firstStop: {
           name: 'San Francisco International Airport',
           iata: 'SFO',
           latitude: 37.6189994812012,
@@ -103,6 +103,29 @@ describe('<RouteListOneStop />', () => {
     },
   };
 
+  const expectedRoutes = [{
+    nodeId: 'WyJyb3V0ZXMiLDU1NzY5XQ==',
+    airline: 'United Airlines',
+    airports: [{
+      iata: 'ACV',
+      name: 'Arcata Airport',
+      latitude: 40.978099822998,
+      longitude: -124.109001159668,
+    },
+    {
+      iata: 'SFO',
+      name: 'San Francisco International Airport',
+      latitude: 37.6189994812012,
+      longitude: -122.375,
+    },
+    {
+      iata: 'LAX',
+      name: 'Los Angeles International Airport',
+      latitude: 33.94250107,
+      longitude: -118.4079971,
+    }],
+  }];
+
   beforeEach(() => {
     wrapper = shallow(<RouteListOneStopComponent
       routeData={routeDataLoaded}
@@ -125,19 +148,17 @@ describe('<RouteListOneStop />', () => {
   it('renders a <RouteList /> if there are routes', () => {
     wrapper = shallow(<RouteListOneStopComponent
       routeData={routeDataLoaded}
-      onErrorMessage={onErrorMessage}
+      destinationAirport="ORD"
     />);
     expect(wrapper.find(RouteList)).to.have.length(1);
   });
 
-  it('should send an error message to onErrorMessage when there are no routes', () => {
-    const handleErrorMessageSpy = spy();
+  it('should show an error message when there are no routes', () => {
     wrapper = shallow(<RouteListOneStopComponent
-      routeData={routeDataLoading}
-      onErrorMessage={handleErrorMessageSpy}
+      routeData={routeDataLoaded}
+      destinationAirport="ABC"
     />);
-    wrapper.setProps({ routeData: routeDataEmpty });
-    expect(handleErrorMessageSpy.called).to.equal(true);
+    expect(wrapper.find('div')).to.have.length(1);
   });
 
   it('should clear error message with onErrorMessage when there are routes', () => {
@@ -147,43 +168,22 @@ describe('<RouteListOneStop />', () => {
       onErrorMessage={handleErrorMessageSpy}
     />);
     wrapper.setProps({ routeData: routeDataEmpty });
-    expect(handleErrorMessageSpy.called).to.equal(true);
+    expect(wrapper.find('div')).to.have.length(1);
     wrapper.setProps({ routeData: routeDataLoaded });
     expect(handleErrorMessageSpy.calledWith('')).to.equal(true);
   });
 
   it('passes routes to <RouteList /> as a prop', () => {
     wrapper = shallow(<RouteListOneStopComponent
-      routeData={routeDataEmpty}
+      routeData={routeDataLoaded}
+      destinationAirport="LAX"
       onErrorMessage={onErrorMessage}
     />);
     const routeList = wrapper.find(RouteList);
-    expect(routeList.prop('routes')).to.eql([]);
+    expect(routeList.prop('routes')).to.eql(expectedRoutes);
   });
 
   it('createRoutesFromData takes routeData and converts it into routes', () => {
-    const expectedRoutes = [{
-      nodeId: 'WyJyb3V0ZXMiLDU1NzY5XQ==',
-      airline: 'United Airlines',
-      airports: [{
-        iata: 'ACV',
-        name: 'Arcata Airport',
-        latitude: 40.978099822998,
-        longitude: -124.109001159668,
-      },
-      {
-        iata: 'SFO',
-        name: 'San Francisco International Airport',
-        latitude: 37.6189994812012,
-        longitude: -122.375,
-      },
-      {
-        iata: 'LAX',
-        name: 'Los Angeles International Airport',
-        latitude: 33.94250107,
-        longitude: -118.4079971,
-      }],
-    }];
     wrapper = shallow(<RouteListOneStopComponent
       routeData={routeDataLoaded}
       destinationAirport="LAX"

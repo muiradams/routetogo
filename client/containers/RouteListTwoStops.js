@@ -1,16 +1,20 @@
 import React, { Component } from 'react';
 import { graphql } from 'react-apollo';
 import RouteList from '../components/RouteList';
-import oneStop from '../queries/oneStop';
+import twoStops from '../queries/twoStops';
 
-export class RouteListOneStopComponent extends Component {
+export class RouteListTwoStopsComponent extends Component {
   constructor(props) {
     super(props);
     this.createRoutesFromData = this.createRoutesFromData.bind(this);
   }
 
   componentWillReceiveProps(nextProps) {
-    this.props.onErrorMessage('');
+    if (nextProps.routeData.allRoutes.nodes.length === 0) {
+      this.props.onErrorMessage('No routes found. Please try different search terms.');
+    } else {
+      this.props.onErrorMessage('');
+    }
   }
 
   createRoutesFromData(routeData) {
@@ -47,8 +51,9 @@ export class RouteListOneStopComponent extends Component {
           return null;
         }
 
-        const finalAirport = finalAirports.find(airport =>
-          airport.airport.iata === destinationAirport);
+        const finalAirport = finalAirports.find((airport) => {
+          return airport.airport.iata === destinationAirport;
+        });
 
         if (!finalAirport) return null;
 
@@ -72,20 +77,17 @@ export class RouteListOneStopComponent extends Component {
 
     if (routeData.allRoutes) {
       routes = this.createRoutesFromData(routeData.allRoutes.nodes);
-      if (routes.length > 0) {
-        return <RouteList routes={routes} />;
-      }
     }
 
     if (routeData.loading) {
       return <div>Loading...</div>;
     }
 
-    return <div>No routes were found. Please Try Different Search Terms.</div>;
+    return <RouteList routes={routes} />;
   }
 }
 
-RouteListOneStopComponent.defaultProps = {
+RouteListTwoStopsComponent.defaultProps = {
   airline: '',
   sourceAirport: '',
   destinationAirport: '',
@@ -93,7 +95,7 @@ RouteListOneStopComponent.defaultProps = {
   selectedRouteId: '',
 };
 
-RouteListOneStopComponent.propTypes = {
+RouteListTwoStopsComponent.propTypes = {
   airline: React.PropTypes.string,
   sourceAirport: React.PropTypes.string,
   destinationAirport: React.PropTypes.string,
@@ -104,9 +106,9 @@ RouteListOneStopComponent.propTypes = {
   onErrorMessage: React.PropTypes.func.isRequired,
 };
 
-export default graphql(oneStop, {
+export default graphql(twoStops, {
   name: 'routeData',
   options: ({ airline, sourceAirport }) => ({
     variables: { airline, sourceAirport },
   }),
-})(RouteListOneStopComponent);
+})(RouteListTwoStopsComponent);

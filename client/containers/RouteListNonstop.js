@@ -10,11 +10,7 @@ export class RouteListNonstopComponent extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps.routeData.allRoutes.nodes.length === 0) {
-      this.props.onErrorMessage('No Routes Found. Please Try Different Search Terms.');
-    } else {
-      this.props.onErrorMessage('');
-    }
+    this.props.onErrorMessage('');
   }
 
   createRoutesFromData(routeData) {
@@ -51,13 +47,16 @@ export class RouteListNonstopComponent extends Component {
 
     if (routeData.allRoutes) {
       routes = this.createRoutesFromData(routeData.allRoutes.nodes);
+      if (routes.length > 0) {
+        return <RouteList routes={routes} />;
+      }
     }
 
     if (routeData.loading) {
       return <div>Loading...</div>;
     }
 
-    return <RouteList routes={routes} />;
+    return <div>No routes were found. Please Try Different Search Terms.</div>;
   }
 }
 

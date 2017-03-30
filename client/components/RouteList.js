@@ -46,6 +46,7 @@ class RouteList extends Component {
       }
     }
 
+    // Sort routes first by stops, then by total distance of route
     const mappedRoutes = routes.map((route, routeIndex) => {
       let totalDistance = route.airports.reduce((total, airport, airportIndex, airports) => {
         let distance = 0;
@@ -97,7 +98,7 @@ class RouteList extends Component {
   }
 
   render() {
-    if(this.props.routes.length > 0) {
+    if (this.props.routes.length > 0) {
       return (
         <div>
           <RouteMap selectedRoute={this.state.selectedRoute} />
@@ -106,9 +107,9 @@ class RouteList extends Component {
           </ul>
         </div>
       );
-    } else {
-      return null;
     }
+
+    return null;
   }
 }
 

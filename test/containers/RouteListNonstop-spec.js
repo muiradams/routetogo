@@ -100,6 +100,18 @@ describe('<RouteListNonstop />', () => {
     expect(handleErrorMessageSpy.called).to.equal(true);
   });
 
+  it('should clear error message with onErrorMessage when there are routes', () => {
+    const handleErrorMessageSpy = spy();
+    wrapper = shallow(<RouteListNonstopComponent
+      routeData={routeDataLoading}
+      onErrorMessage={handleErrorMessageSpy}
+    />);
+    wrapper.setProps({ routeData: routeDataEmpty });
+    expect(handleErrorMessageSpy.called).to.equal(true);
+    wrapper.setProps({ routeData: routeDataLoaded });
+    expect(handleErrorMessageSpy.calledWith('')).to.equal(true);
+  });
+
   it('passes routes to <RouteList /> as a prop', () => {
     wrapper = shallow(<RouteListNonstopComponent
       routeData={routeDataEmpty}

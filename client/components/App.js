@@ -51,8 +51,8 @@ export default class App extends Component {
     const numStops = Number(stops);
     let airlineQuery;
 
-    // Clear previous error messages
-    this.setState({ errorMessage: '' });
+
+
 
     if (airline === 'all') {
       airlineQuery = '';
@@ -70,6 +70,11 @@ export default class App extends Component {
 
     if (!sourceAirport && !destinationAirport) {
       this.handleErrorMessage('Either departure or destination airport must be provided for nonstop routes.');
+      return;
+    }
+
+    if (sourceAirport === destinationAirport) {
+      this.handleErrorMessage('Departure and destination airports must be different.');
       return;
     }
 

@@ -12,6 +12,8 @@ export class RouteListOneStopComponent extends Component {
   componentWillReceiveProps(nextProps) {
     if (nextProps.routeData.allRoutes.nodes.length === 0) {
       this.props.onErrorMessage('No routes found. Please try different search terms.');
+    } else {
+      this.props.onErrorMessage('');
     }
   }
 

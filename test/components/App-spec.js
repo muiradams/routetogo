@@ -263,30 +263,16 @@ describe('<App />', () => {
 
   // FUNCTION LOGIC
   context('createQuery function', () => {
-    it('clears errorMessage when first run', () => {
-      wrapper.setState({
-        sourceAirport: 'SMF',
-        destinationAirport: 'CDG',
-        advancedOptions: {
-          stops: '1',
-        },
-        errorMessage: '',
-      });
+    it('adds error to errorMessage if no source or destination airport provided', () => {
       wrapper.instance().createQuery();
       expect(wrapper.state('errorMessage').length).to.be.greaterThan(0);
-      wrapper.setState({
-        sourceAirport: 'SMF',
-        destinationAirport: 'CDG',
-        advancedOptions: {
-          stops: '1',
-          airline: 'UA',
-        },
-      });
-      wrapper.instance().createQuery();
-      expect(wrapper.state('errorMessage').length).to.equal(0);
     });
 
-    it('adds error to errorMessage if no source or destination airport provided', () => {
+    it('adds error to errorMessage if the source and destination are the same', () => {
+      wrapper.setState({
+        sourceAirport: 'SMF',
+        destinationAirport: 'SMF',
+      });
       wrapper.instance().createQuery();
       expect(wrapper.state('errorMessage').length).to.be.greaterThan(0);
     });

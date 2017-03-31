@@ -18,9 +18,8 @@ describe('<App />', () => {
     sourceAirport: 'SMF',
     destinationAirport: 'CDG',
     advancedOptions: {
-      stops: 0,
+      nonstop: true,
       airline: 'AA',
-      alliance: 'none',
     },
   };
   const client = new ApolloClient();
@@ -76,9 +75,8 @@ describe('<App />', () => {
 
     it('starts with an empty advancedOptions', () => {
       const advancedOptions = {
-        stops: '0',
         airline: 'all',
-        alliance: 'none',
+        nonstop: false,
       };
       expect(wrapper.state('advancedOptions')).to.eql(advancedOptions);
     });
@@ -105,8 +103,8 @@ describe('<App />', () => {
     });
 
     it('adds advancedOptions to state', () => {
-      wrapper.instance().handleAdvancedOptionsInput({ alliance: 'oneworld' });
-      expect(wrapper.state('advancedOptions')).to.eql({ alliance: 'oneworld' });
+      wrapper.instance().handleAdvancedOptionsInput({ airline: 'UA' });
+      expect(wrapper.state('advancedOptions')).to.eql({ airline: 'UA' });
     });
 
     it('adds error to errorMessage state', () => {
@@ -178,9 +176,8 @@ describe('<App />', () => {
           sourceAirport: 'SMF',
           destinationAirport: 'CDG',
           advancedOptions: {
-            stops: 0,
+            nonstop: true,
             airline: '',
-            alliance: 'none',
           },
         },
       });
@@ -191,9 +188,8 @@ describe('<App />', () => {
           sourceAirport: 'SMF',
           destinationAirport: 'CDG',
           advancedOptions: {
-            stops: 0,
+            nonstop: true,
             airline: 'AA',
-            alliance: 'none',
           },
         },
       });
@@ -208,9 +204,8 @@ describe('<App />', () => {
           sourceAirport: '',
           destinationAirport: 'CDG',
           advancedOptions: {
-            stops: 0,
+            nonstop: true,
             airline: '',
-            alliance: 'none',
           },
         },
       });
@@ -221,9 +216,8 @@ describe('<App />', () => {
           sourceAirport: 'SMF',
           destinationAirport: 'CDG',
           advancedOptions: {
-            stops: 0,
+            nonstop: true,
             airline: 'AA',
-            alliance: 'none',
           },
         },
       });
@@ -238,9 +232,8 @@ describe('<App />', () => {
           sourceAirport: 'SMF',
           destinationAirport: '',
           advancedOptions: {
-            stops: 0,
+            nonstop: true,
             airline: '',
-            alliance: 'none',
           },
         },
       });
@@ -251,9 +244,8 @@ describe('<App />', () => {
           sourceAirport: 'SMF',
           destinationAirport: 'CDG',
           advancedOptions: {
-            stops: 0,
+            nonstop: true,
             airline: 'AA',
-            alliance: 'none',
           },
         },
       });
@@ -278,23 +270,23 @@ describe('<App />', () => {
       expect(wrapper.state('errorMessage').length).to.be.greaterThan(0);
     });
 
-    it('adds error to errorMessage if stops > 0, but there is not a source AND destination set', () => {
+    it('adds error to errorMessage if not nonstop, but there is not a source AND destination set', () => {
       wrapper.setState({
         sourceAirport: 'SMF',
         advancedOptions: {
-          stops: '1',
+          nonstop: false,
         },
       });
       wrapper.instance().createQuery();
       expect(wrapper.state('errorMessage').length).to.be.greaterThan(0);
     });
 
-    it('adds error to errorMessage if stops > 0, but neither airline nor alliance is set', () => {
+    it('adds error to errorMessage if not nonstop, but airline isn\'t set', () => {
       wrapper.setState({
         sourceAirport: 'SMF',
         destinationAirport: 'CDG',
         advancedOptions: {
-          stops: '1',
+          nonstop: false,
         },
       });
       wrapper.instance().createQuery();
@@ -303,7 +295,7 @@ describe('<App />', () => {
         sourceAirport: 'SMF',
         destinationAirport: 'CDG',
         advancedOptions: {
-          stops: '1',
+          nonstop: false,
           airline: 'UA',
         },
         errorMessage: '',
@@ -317,9 +309,8 @@ describe('<App />', () => {
         sourceAirport: 'SMF',
         destinationAirport: 'CDG',
         advancedOptions: {
-          stops: '0',
+          nonstop: true,
           airline: 'all',
-          alliance: 'none',
         },
       });
       wrapper.instance().createQuery();
@@ -327,9 +318,8 @@ describe('<App />', () => {
         sourceAirport: 'SMF',
         destinationAirport: 'CDG',
         advancedOptions: {
-          stops: 0,
+          nonstop: true,
           airline: '',
-          alliance: '',
         },
       };
       expect(wrapper.state('query')).to.eql(queryExpected);
@@ -342,42 +332,23 @@ describe('<App />', () => {
       expect(wrapper.find(RouteListNonstop)).to.have.length(0);
     });
 
-    it('returns <RouteListNonstop /> if query stops is set to 0', () => {
+    it('returns <RouteListNonstop /> if query nonstop is true', () => {
       wrapper = shallow(wrapWithProvider(<App />)).shallow();
       wrapper.setState({ query });
       expect(wrapper.find(RouteListNonstop)).to.have.length(1);
     });
 
-    it('returns <RouteListOneStop /> if query stops is set to 1', () => {
+    it('returns <RouteListMultiStop /> if nonstop is false', () => {
       wrapper = shallow(wrapWithProvider(<App />)).shallow();
       wrapper.setState({ query: {
         sourceAirport: 'SMF',
         destinationAirport: 'CDG',
         advancedOptions: {
-          stops: 1,
+          nonstop: false,
           airline: 'all',
-          alliance: 'none',
-        },
-      } });
-      expect(wrapper.find(RouteListOneStop)).to.have.length(1);
-    });
-
-    it('returns <RouteListMultiStop /> if query stops is set to 2', () => {
-      wrapper = shallow(wrapWithProvider(<App />)).shallow();
-      wrapper.setState({ query: {
-        sourceAirport: 'SMF',
-        destinationAirport: 'CDG',
-        advancedOptions: {
-          stops: 2,
-          airline: 'all',
-          alliance: 'none',
         },
       } });
       expect(wrapper.find(RouteListMultiStop)).to.have.length(1);
     });
-
-    it('returns <RouteListThreeStops /> if query stops is set to 3');
-    it('returns <RouteListFourStops /> if query stops is set to 4');
-    it('returns <RouteListFiveStops /> if query stops is set to 5');
   });
 });

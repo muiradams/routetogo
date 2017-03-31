@@ -13,7 +13,7 @@ export default class App extends Component {
     this.state = {
       sourceAirport: '',
       destinationAirport: '',
-      advancedOptions: { stops: '0', airline: 'all', alliance: 'none' },
+      advancedOptions: { nonstop: false, airline: 'all' },
       query: {},
       errorMessage: '',
     };
@@ -47,23 +47,14 @@ export default class App extends Component {
     const {
       sourceAirport,
       destinationAirport,
-      advancedOptions: { stops, airline, alliance },
+      advancedOptions: { nonstop, airline },
     } = this.state;
-    const numStops = Number(stops);
     let airlineQuery;
 
     if (airline === 'all') {
       airlineQuery = '';
     } else {
       airlineQuery = airline;
-    }
-
-    let allianceQuery;
-
-    if (alliance === 'none') {
-      allianceQuery = '';
-    } else {
-      allianceQuery = alliance;
     }
 
     if (!sourceAirport && !destinationAirport) {
@@ -76,13 +67,13 @@ export default class App extends Component {
       return;
     }
 
-    if (numStops > 0 && (!sourceAirport || !destinationAirport)) {
-      this.handleErrorMessage('Both departure and destination airports must be provided if there are stops.');
+    if (!nonstop && (!sourceAirport || !destinationAirport)) {
+      this.handleErrorMessage('Both departure and destination airports must be provided.');
       return;
     }
 
-    if (numStops > 0 && !airlineQuery && !allianceQuery) {
-      this.handleErrorMessage('Either an airline or alliance must be provided if there are stops.');
+    if (!nonstop && !airlineQuery) {
+      this.handleErrorMessage('An airline must be provided.');
       return;
     }
 
@@ -90,9 +81,8 @@ export default class App extends Component {
       sourceAirport,
       destinationAirport,
       advancedOptions: {
-        stops: numStops,
+        nonstop,
         airline: airlineQuery,
-        alliance: allianceQuery,
       },
     };
 
@@ -119,9 +109,8 @@ export default class App extends Component {
         sourceAirport,
         destinationAirport,
         advancedOptions: {
-          stops,
+          nonstop,
           airline,
-          alliance,
         },
       } = this.state.query;
 
@@ -150,17 +139,11 @@ export default class App extends Component {
         queryProps = { destinationAirport };
       }
 
-      if (stops === 0) {
+      if (nonstop) {
         return <RouteListNonstop {...props} {...queryProps} />;
       }
 
-      if (stops === 1) {
-        return <RouteListOneStop {...props} {...queryProps} />;
-      }
-
-      if (stops === 2) {
-        return <RouteListMultiStop {...props} {...queryProps} />;
-      }
+      return <RouteListMultiStop {...props} {...queryProps} />;
     }
 
     // A query is not yet set, so don't display anything

@@ -4,34 +4,28 @@ class SearchAdvanced extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      stops: '0',
+      nonstop: false,
       airline: 'all',
-      alliance: 'none',
     };
     this.handleChange = this.handleChange.bind(this);
     this.airlineFirstOption = this.airlineFirstOption.bind(this);
-    this.allianceFirstOption = this.allianceFirstOption.bind(this);
   }
 
   handleChange(event) {
     const name = event.target.name;
     const value = event.target.value;
-    const { stops, airline, alliance } = this.state;
+    const { airline } = this.state;
+    let { nonstop } = this.state;
 
     switch (name) {
-      case 'stops':
-        this.setState({ stops: value });
-        this.props.onAdvancedOptionsInput({ stops: value, airline, alliance });
+      case 'nonstop':
+        nonstop = !this.state.nonstop;
+        this.setState({ nonstop });
+        this.props.onAdvancedOptionsInput({ nonstop, airline });
         break;
       case 'airline':
-        if (value !== 'all') this.setState({ alliance: 'none' });
         this.setState({ airline: value });
-        this.props.onAdvancedOptionsInput({ stops, airline: value, alliance: 'none' });
-        break;
-      case 'alliance':
-        if (value !== 'none') this.setState({ airline: 'all' });
-        this.setState({ alliance: value });
-        this.props.onAdvancedOptionsInput({ stops, airline: 'all', alliance: value });
+        this.props.onAdvancedOptionsInput({ nonstop, airline: value });
         break;
       default:
         break;
@@ -39,38 +33,23 @@ class SearchAdvanced extends Component {
   }
 
   airlineFirstOption() {
-    if (this.state.stops === '0') {
+    if (this.state.nonstop) {
       return <option value="all">All Airlines</option>;
     } else {
       return <option value="all">-----</option>;
     }
   }
 
-  allianceFirstOption() {
-    if (this.state.stops === '0') {
-      return <option value="none">None</option>;
-    } else {
-      return <option value="none">-----</option>;
-    }
-  }
-
   render() {
     return (
       <div>
-        <label htmlFor="stops">Max. Stops</label>
-        <select
-          name="stops"
-          id="stops"
-          value={this.state.stops}
+        <label htmlFor="nonstop">Nonstop</label>
+        <input
+          type="checkbox"
+          name="nonstop"
+          id="nonstop"
           onChange={this.handleChange}
-        >
-          <option value="0">Nonstop</option>
-          <option value="1">1 Stop</option>
-          <option value="2">2 Stops</option>
-          <option value="3">3 Stops</option>
-          <option value="4">4 Stops</option>
-          <option value="5">5 Stops</option>
-        </select>
+        />
         <label htmlFor="airline">Airline</label>
         <select
           name="airline"
@@ -81,18 +60,6 @@ class SearchAdvanced extends Component {
           { this.airlineFirstOption() }
           <option value="UA">United Airlines</option>
           <option value="AA">American Airlines</option>
-        </select>
-        <label htmlFor="alliance">Alliance</label>
-        <select
-          name="alliance"
-          id="alliance"
-          value={this.state.alliance}
-          onChange={this.handleChange}
-        >
-          { this.allianceFirstOption() }
-          <option value="staralliance">Star Alliance</option>
-          <option value="oneworld">Oneworld</option>
-          <option value="skyteam">SkyTeam</option>
         </select>
       </div>
     );

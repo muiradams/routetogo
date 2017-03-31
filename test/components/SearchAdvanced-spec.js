@@ -20,40 +20,32 @@ describe('<SearchAdvanced />', () => {
     expect(wrapper).to.have.length(1);
   });
 
-  it('shows three select fields', () => {
-    expect(wrapper.find('select')).to.have.length(3);
+  it('shows one input and one select field', () => {
+    expect(wrapper.find('select')).to.have.length(1);
+    expect(wrapper.find('input')).to.have.length(1);
   });
 
   // INITIALIZES THE STATE
   context('state is initialized correctly', () => {
-    it('starts with stops set to 0', () => {
-      expect(wrapper.state('stops')).to.eql('0');
+    it('starts with nonstop set to false', () => {
+      expect(wrapper.state('nonstop')).to.eql(false);
     });
 
     it('starts with airline set to all', () => {
       expect(wrapper.state('airline')).to.eql('all');
     });
-
-    it('starts with alliance set to none', () => {
-      expect(wrapper.state('alliance')).to.eql('none');
-    });
   });
 
   // UPDATES THE STATE
-  context('<select> elements update the state on change', () => {
-    it('stops', () => {
-      wrapper.instance().handleChange({ target: { name: 'stops', value: '3' } });
-      expect(wrapper.state('stops')).to.eql('3');
+  context('<input> & <select> elements update the state on change', () => {
+    it('nonstop', () => {
+      wrapper.instance().handleChange({ target: { name: 'nonstop', value: 'on' } });
+      expect(wrapper.state('nonstop')).to.eql(true);
     });
-    
+
     it('airline', () => {
       wrapper.instance().handleChange({ target: { name: 'airline', value: 'AA' } });
       expect(wrapper.state('airline')).to.eql('AA');
-    });
-    
-    it('alliance', () => {
-      wrapper.instance().handleChange({ target: { name: 'alliance', value: 'oneworld' } });
-      expect(wrapper.state('alliance')).to.eql('oneworld');
     });
   });
 
@@ -63,13 +55,12 @@ describe('<SearchAdvanced />', () => {
     wrapper = shallow(<SearchAdvanced
       onAdvancedOptionsInput={handleStopsInputSpy}
     />);
-    const input = wrapper.find('#stops');
-    input.simulate('change', { target: { name: 'stops', value: '2' } });
+    const input = wrapper.find('#nonstop');
+    input.simulate('change', { target: { name: 'nonstop', value: 'on' } });
     expect(handleStopsInputSpy.called).to.equal(true);
     expect(handleStopsInputSpy.calledWith({
-      stops: '2',
+      nonstop: true,
       airline: 'all',
-      alliance: 'none',
     })).to.equal(true);
   });
 });

@@ -4,7 +4,7 @@ import SearchAdvanced from './SearchAdvanced';
 import SearchButton from './SearchButton';
 import RouteListNonstop from '../containers/RouteListNonstop';
 import RouteListOneStop from '../containers/RouteListOneStop';
-import RouteListTwoStops from '../containers/RouteListTwoStops';
+import RouteListMultiStop from '../containers/RouteListMultiStop';
 
 export default class App extends Component {
   constructor(props) {
@@ -159,7 +159,7 @@ export default class App extends Component {
       }
 
       if (stops === 2) {
-        return <RouteListTwoStops {...props} {...queryProps} />;
+        return <RouteListMultiStop {...props} {...queryProps} />;
       }
     }
 

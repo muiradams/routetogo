@@ -1,7 +1,7 @@
 import { gql } from 'react-apollo';
 
 export default gql`
-  query twostops($airline: String!, $sourceAirport: String!){
+  query twostops($airline: String!, $sourceAirport: String!, $destinationAirport: String!){
     allRoutes(condition: {
       airline: $airline, 
       sourceAirport: $sourceAirport, 
@@ -32,7 +32,8 @@ export default gql`
                 latitude
                 longitude
                 finalAirports: routesBySourceAirportId (condition: {
-                  airline: $airline, 
+                  airline: $airline,
+                  destinationAirport: $destinationAirport,
                   }) {
                   nodes {
                     airport: airportByDestinationAirportId {

@@ -40,6 +40,10 @@ class RouteList extends Component {
     const { selectedRoute } = this.state;
     let selectedRouteId = '';
 
+    function createUniqueKey(route) {
+      return route.airports.reduce((key, airport) => key + airport.iata, '');
+    }
+
     if (selectedRoute) {
       if (selectedRoute.nodeId) {
         selectedRouteId = selectedRoute.nodeId;
@@ -87,7 +91,7 @@ class RouteList extends Component {
 
       return (
         <li
-          key={route.nodeId}
+          key={createUniqueKey(route)}
           className={className}
           onClick={() => this.handleSelectRoute(route)}
         >

@@ -10,7 +10,7 @@ import SearchAdvanced from '../../client/components/SearchAdvanced';
 import SearchButton from '../../client/components/SearchButton';
 import RouteListNonstop from '../../client/containers/RouteListNonstop';
 import RouteListOneStop from '../../client/containers/RouteListOneStop';
-import RouteListTwoStops from '../../client/containers/RouteListTwoStops';
+import RouteListMultiStop from '../../client/containers/RouteListMultiStop';
 
 describe('<App />', () => {
   let wrapper;
@@ -362,7 +362,7 @@ describe('<App />', () => {
       expect(wrapper.find(RouteListOneStop)).to.have.length(1);
     });
 
-    it('returns <RouteListTwoStops /> if query stops is set to 2', () => {
+    it('returns <RouteListMultiStop /> if query stops is set to 2', () => {
       wrapper = shallow(wrapWithProvider(<App />)).shallow();
       wrapper.setState({ query: {
         sourceAirport: 'SMF',
@@ -373,7 +373,7 @@ describe('<App />', () => {
           alliance: 'none',
         },
       } });
-      expect(wrapper.find(RouteListTwoStops)).to.have.length(1);
+      expect(wrapper.find(RouteListMultiStop)).to.have.length(1);
     });
 
     it('returns <RouteListThreeStops /> if query stops is set to 3');

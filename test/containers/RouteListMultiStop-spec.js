@@ -3,10 +3,10 @@ import React from 'react';
 import { expect } from 'chai';
 import { shallow } from 'enzyme';
 import { spy } from 'sinon';
-import { RouteListOneStopComponent } from '../../client/containers/RouteListOneStop';
+import { RouteListMultiStopComponent } from '../../client/containers/RouteListMultiStop';
 import RouteList from '../../client/components/RouteList';
 
-describe('<RouteListOneStop />', () => {
+describe('<RouteListMultiStop />', () => {
   let wrapper;
   const onErrorMessage = () => {};
   const routeDataLoading = {
@@ -40,14 +40,17 @@ describe('<RouteListOneStop />', () => {
           iata: 'CEC',
           latitude: 41.78020096,
           longitude: -124.2369995,
-          finalAirports: {
+          secondStop: {
             nodes: [
               {
                 airport: {
-                  iata: 'DEN',
-                  name: 'Denver International Airport',
-                  latitude: 39.861698150635,
-                  longitude: -104.672996521,
+                  iata: 'CDG',
+                  name: 'Charles de Gaulle International Airport',
+                  latitude: 49.0127983093,
+                  longitude: 2.54999995232,
+                  finalAirports: {
+                    nodes: [],
+                  },
                 },
               },
               {
@@ -56,6 +59,18 @@ describe('<RouteListOneStop />', () => {
                   name: 'Chicago O\'Hare International Airport',
                   latitude: 41.97859955,
                   longitude: -87.90480042,
+                  finalAirports: {
+                    nodes: [
+                      {
+                        airport: {
+                          iata: 'CDG',
+                          name: 'Charles de Gaulle International Airport',
+                          latitude: 49.0127983093,
+                          longitude: 2.54999995232,
+                        },
+                      },
+                    ],
+                  },
                 },
               },
             ],
@@ -78,7 +93,7 @@ describe('<RouteListOneStop />', () => {
           iata: 'SFO',
           latitude: 37.6189994812012,
           longitude: -122.375,
-          finalAirports: {
+          secondStop: {
             nodes: [
               {
                 airport: {
@@ -86,6 +101,18 @@ describe('<RouteListOneStop />', () => {
                   name: 'Los Angeles International Airport',
                   latitude: 33.94250107,
                   longitude: -118.4079971,
+                  finalAirports: {
+                    nodes: [
+                      {
+                        airport: {
+                          iata: 'CDG',
+                          name: 'Charles de Gaulle International Airport',
+                          latitude: 49.0127983093,
+                          longitude: 2.54999995232,
+                        },
+                      },
+                    ],
+                  },
                 },
               },
               {
@@ -94,6 +121,9 @@ describe('<RouteListOneStop />', () => {
                   name: 'Chicago O\'Hare International Airport',
                   latitude: 41.97859955,
                   longitude: -87.90480042,
+                  finalAirports: {
+                    nodes: [],
+                  },
                 },
               },
             ],
@@ -104,6 +134,56 @@ describe('<RouteListOneStop />', () => {
   };
 
   const expectedRoutes = [{
+    nodeId: 'WyJyb3V0ZXMiLDU1NzY4XQ==',
+    airline: 'United Airlines',
+    airports: [{
+      iata: 'ACV',
+      name: 'Arcata Airport',
+      latitude: 40.978099822998,
+      longitude: -124.109001159668,
+    },
+    {
+      name: 'Jack Mc Namara Field Airport',
+      iata: 'CEC',
+      latitude: 41.78020096,
+      longitude: -124.2369995,
+    },
+    {
+      iata: 'CDG',
+      name: 'Charles de Gaulle International Airport',
+      latitude: 49.0127983093,
+      longitude: 2.54999995232,
+    }],
+  },
+  {
+    nodeId: 'WyJyb3V0ZXMiLDU1NzY4XQ==',
+    airline: 'United Airlines',
+    airports: [{
+      iata: 'ACV',
+      name: 'Arcata Airport',
+      latitude: 40.978099822998,
+      longitude: -124.109001159668,
+    },
+    {
+      name: 'Jack Mc Namara Field Airport',
+      iata: 'CEC',
+      latitude: 41.78020096,
+      longitude: -124.2369995,
+    },
+    {
+      iata: 'ORD',
+      name: 'Chicago O\'Hare International Airport',
+      latitude: 41.97859955,
+      longitude: -87.90480042,
+    },
+    {
+      iata: 'CDG',
+      name: 'Charles de Gaulle International Airport',
+      latitude: 49.0127983093,
+      longitude: 2.54999995232,
+    }],
+  },
+  {
     nodeId: 'WyJyb3V0ZXMiLDU1NzY5XQ==',
     airline: 'United Airlines',
     airports: [{
@@ -123,11 +203,17 @@ describe('<RouteListOneStop />', () => {
       name: 'Los Angeles International Airport',
       latitude: 33.94250107,
       longitude: -118.4079971,
+    },
+    {
+      iata: 'CDG',
+      name: 'Charles de Gaulle International Airport',
+      latitude: 49.0127983093,
+      longitude: 2.54999995232,
     }],
   }];
 
   beforeEach(() => {
-    wrapper = shallow(<RouteListOneStopComponent
+    wrapper = shallow(<RouteListMultiStopComponent
       routeData={routeDataLoaded}
       onErrorMessage={onErrorMessage}
     />);
@@ -138,7 +224,7 @@ describe('<RouteListOneStop />', () => {
   });
 
   it('renders a div if the routeData is loading', () => {
-    wrapper = shallow(<RouteListOneStopComponent
+    wrapper = shallow(<RouteListMultiStopComponent
       routeData={routeDataLoading}
       onErrorMessage={onErrorMessage}
     />);
@@ -146,15 +232,15 @@ describe('<RouteListOneStop />', () => {
   });
 
   it('renders a <RouteList /> if there are routes', () => {
-    wrapper = shallow(<RouteListOneStopComponent
+    wrapper = shallow(<RouteListMultiStopComponent
       routeData={routeDataLoaded}
-      destinationAirport="ORD"
+      destinationAirport="CDG"
     />);
     expect(wrapper.find(RouteList)).to.have.length(1);
   });
 
   it('shows an error message when there are no routes', () => {
-    wrapper = shallow(<RouteListOneStopComponent
+    wrapper = shallow(<RouteListMultiStopComponent
       routeData={routeDataLoaded}
       destinationAirport="ABC"
     />);
@@ -163,7 +249,7 @@ describe('<RouteListOneStop />', () => {
 
   it('clears error message with onErrorMessage when there are routes', () => {
     const handleErrorMessageSpy = spy();
-    wrapper = shallow(<RouteListOneStopComponent
+    wrapper = shallow(<RouteListMultiStopComponent
       routeData={routeDataLoading}
       onErrorMessage={handleErrorMessageSpy}
     />);
@@ -174,9 +260,9 @@ describe('<RouteListOneStop />', () => {
   });
 
   it('passes routes to <RouteList /> as a prop', () => {
-    wrapper = shallow(<RouteListOneStopComponent
+    wrapper = shallow(<RouteListMultiStopComponent
       routeData={routeDataLoaded}
-      destinationAirport="LAX"
+      destinationAirport="CDG"
       onErrorMessage={onErrorMessage}
     />);
     const routeList = wrapper.find(RouteList);
@@ -184,9 +270,9 @@ describe('<RouteListOneStop />', () => {
   });
 
   it('createRoutesFromData takes routeData and converts it into routes', () => {
-    wrapper = shallow(<RouteListOneStopComponent
+    wrapper = shallow(<RouteListMultiStopComponent
       routeData={routeDataLoaded}
-      destinationAirport="LAX"
+      destinationAirport="CDG"
       onErrorMessage={onErrorMessage}
     />);
     const routes = wrapper.instance().createRoutesFromData(routeDataLoaded.allRoutes.nodes);

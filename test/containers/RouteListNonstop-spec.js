@@ -90,7 +90,7 @@ describe('<RouteListNonstop />', () => {
     expect(wrapper.find(RouteList)).to.have.length(1);
   });
 
-  it('should send an error message to onErrorMessage when there are no routes', () => {
+  it('sends an error message to onErrorMessage when there are no routes', () => {
     const handleErrorMessageSpy = spy();
     wrapper = shallow(<RouteListNonstopComponent
       routeData={routeDataLoading}
@@ -100,7 +100,7 @@ describe('<RouteListNonstop />', () => {
     expect(handleErrorMessageSpy.called).to.equal(true);
   });
 
-  it('should clear error message with onErrorMessage when there are routes', () => {
+  it('clears error message with onErrorMessage when there are routes', () => {
     const handleErrorMessageSpy = spy();
     wrapper = shallow(<RouteListNonstopComponent
       routeData={routeDataLoading}

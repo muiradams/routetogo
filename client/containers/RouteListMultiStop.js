@@ -64,6 +64,9 @@ export class RouteListMultiStopComponent extends Component {
       finalRoutes = secondStops.map((secondStop) => {
         const secondAirport = secondStop.airport;
 
+        // We should never return to an airport we have already visited
+        if (secondAirport.iata === sourceAirport.iata) return null;
+
         /**
          * If the second stop is the destination then return it, and look at 
          * the next option for a second stop.

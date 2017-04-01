@@ -1,7 +1,7 @@
 import React from 'react';
 
 const Route = (props) => {
-  const route = props.route;
+  const { keyStart, route } = props;
 
   function isEmpty(object) {
     return Object.keys(object).length === 0;
@@ -13,7 +13,9 @@ const Route = (props) => {
   const stops = airports.length - 2;
 
   function renderAirports() {
-    return airports.map(airport => <li key={airport.iata}>{airport.iata}</li>);
+    return airports.map((airport) => {
+      return <li key={keyStart + airport.iata}>{airport.iata}</li>;
+    });
   }
 
   return (
@@ -26,10 +28,12 @@ const Route = (props) => {
 };
 
 Route.defaultProps = {
+  keyStart: '',
   route: {},
 };
 
 Route.propTypes = {
+  keyStart: React.PropTypes.string,
   route: React.PropTypes.shape({
     airline: React.PropTypes.string,
     airports: React.PropTypes.arrayOf(

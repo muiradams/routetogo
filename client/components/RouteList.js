@@ -41,7 +41,7 @@ class RouteList extends Component {
     let selectedRouteId = '';
 
     function createUniqueKey(route) {
-      return route.airports.reduce((key, airport) => key + airport.iata, '');
+      return route.nodeId + route.airports.reduce((key, airport) => key + airport.iata, '');
     }
 
     if (selectedRoute) {
@@ -75,6 +75,7 @@ class RouteList extends Component {
     const sortedRoutes = mappedRoutes.map(route => routes[route.routeIndex]);
 
     return sortedRoutes.map((route, index) => {
+      const key = createUniqueKey(route);
       // Highlight the selected route
       let className;
       if (!selectedRouteId) {
@@ -91,11 +92,11 @@ class RouteList extends Component {
 
       return (
         <li
-          key={createUniqueKey(route)}
+          key={key}
           className={className}
           onClick={() => this.handleSelectRoute(route)}
         >
-          <Route route={route} />
+          <Route route={route} keyStart={key} />
         </li>
       );
     });

@@ -68,7 +68,7 @@ export class RouteListMultiStopComponent extends Component {
         if (secondAirport.iata === sourceAirport.iata) return null;
 
         /**
-         * If the second stop is the destination then return it, and look at 
+         * If the second stop is the destination then return it, and look at
          * the next option for a second stop.
          */
         if (secondAirport.iata === destinationAirport) {
@@ -142,16 +142,16 @@ export class RouteListMultiStopComponent extends Component {
     const { routeData } = this.props;
     let routes = [];
 
+    if (routeData.loading) {
+      return <div>Loading...</div>;
+    }
+
     if (routeData.allRoutes) {
       routes = this.createRoutesFromData(routeData.allRoutes.nodes);
 
       if (routes.length > 0) {
         return <RouteList routes={routes} />;
       }
-    }
-
-    if (routeData.loading) {
-      return <div>Loading...</div>;
     }
 
     return <div>No routes were found. Please Try Different Search Terms.</div>;

@@ -7,9 +7,7 @@ import App from './components/App';
 // Location of the SASS file for webpack to pre-compile
 import styleToPrecompile from './sass/style.sass';
 
-const client = new ApolloClient({
-  dataIdFromObject: o => o.id,
-});
+const client = new ApolloClient();
 
 const Root = () => (
   <ApolloProvider client={client}>

@@ -1,15 +1,14 @@
 /* eslint-disable no-unused-expressions */
 import React from 'react';
 import { expect } from 'chai';
-import { mount, shallow } from 'enzyme';
+import { shallow } from 'enzyme';
 import { ApolloProvider } from 'react-apollo';
 import ApolloClient from 'apollo-client';
 import App from '../../client/components/App';
-import SearchFields from '../../client/components/SearchFields';
-import SearchAdvanced from '../../client/components/SearchAdvanced';
+import SearchFieldsWithData from '../../client/containers/SearchFields';
+import SearchAdvancedWithData from '../../client/containers/SearchAdvanced';
 import SearchButton from '../../client/components/SearchButton';
 import RouteListNonstop from '../../client/containers/RouteListNonstop';
-import RouteListOneStop from '../../client/containers/RouteListOneStop';
 import RouteListMultiStop from '../../client/containers/RouteListMultiStop';
 
 describe('<App />', () => {
@@ -47,11 +46,11 @@ describe('<App />', () => {
   });
 
   it('shows a <SearchFields /> component', () => {
-    expect(wrapper.find(SearchFields)).to.have.length(1);
+    expect(wrapper.find(SearchFieldsWithData)).to.have.length(1);
   });
 
   it('shows a <SearchAdvanced /> component', () => {
-    expect(wrapper.find(SearchAdvanced)).to.have.length(1);
+    expect(wrapper.find(SearchAdvancedWithData)).to.have.length(1);
   });
 
   it('shows a <SearchButton /> component', () => {
@@ -115,30 +114,14 @@ describe('<App />', () => {
 
   // SENDS PROPS TO COMPONENTS
   context('sends the correct props to <SearchFields />', () => {
-    it('passes sourceAirport', () => {
-      wrapper = mount(<App />);
-      const searchFields = wrapper.find(SearchFields);
-      wrapper.setState({ sourceAirport: 'SFO' });
-      const sourceAirport = wrapper.state('sourceAirport');
-      expect(searchFields.prop('sourceAirport')).to.equal(sourceAirport);
-    });
-
-    it('passes destinationAirport', () => {
-      wrapper = mount(<App />);
-      const searchFields = wrapper.find(SearchFields);
-      wrapper.setState({ destinationAirport: 'CDG' });
-      const destinationAirport = wrapper.state('destinationAirport');
-      expect(searchFields.prop('destinationAirport')).to.equal(destinationAirport);
-    });
-
     it('passes handleSourceAirportInput function', () => {
-      const searchFields = wrapper.find(SearchFields);
+      const searchFields = wrapper.find(SearchFieldsWithData);
       const handleSourceAirportInput = wrapper.instance().handleSourceAirportInput;
       expect(searchFields.prop('onSourceAirportInput')).to.eql(handleSourceAirportInput);
     });
 
     it('passes handleDestinationAirportInput function', () => {
-      const searchFields = wrapper.find(SearchFields);
+      const searchFields = wrapper.find(SearchFieldsWithData);
       const handleDestinationAirportInput = wrapper.instance().handleDestinationAirportInput;
       expect(searchFields.prop('onDestinationAirportInput')).to.eql(handleDestinationAirportInput);
     });
@@ -146,7 +129,7 @@ describe('<App />', () => {
 
   context('sends the correct props to <SearchAdvanced />', () => {
     it('passes handleAdvancedOptionsInput function', () => {
-      const searchAdvanced = wrapper.find(SearchAdvanced);
+      const searchAdvanced = wrapper.find(SearchAdvancedWithData);
       const handleAdvancedOptionsInput = wrapper.instance().handleAdvancedOptionsInput;
       expect(searchAdvanced.prop('onAdvancedOptionsInput')).to.eql(handleAdvancedOptionsInput);
     });

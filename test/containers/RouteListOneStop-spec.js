@@ -149,6 +149,7 @@ describe('<RouteListOneStop />', () => {
     wrapper = shallow(<RouteListOneStopComponent
       routeData={routeDataLoaded}
       destinationAirport="ORD"
+      onErrorMessage={onErrorMessage}
     />);
     expect(wrapper.find(RouteList)).to.have.length(1);
   });
@@ -157,6 +158,7 @@ describe('<RouteListOneStop />', () => {
     wrapper = shallow(<RouteListOneStopComponent
       routeData={routeDataLoaded}
       destinationAirport="ABC"
+      onErrorMessage={onErrorMessage}
     />);
     expect(wrapper.find('div')).to.have.length(1);
   });

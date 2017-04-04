@@ -235,6 +235,7 @@ describe('<RouteListMultiStop />', () => {
     wrapper = shallow(<RouteListMultiStopComponent
       routeData={routeDataLoaded}
       destinationAirport="CDG"
+      onErrorMessage={onErrorMessage}
     />);
     expect(wrapper.find(RouteList)).to.have.length(1);
   });
@@ -243,6 +244,7 @@ describe('<RouteListMultiStop />', () => {
     wrapper = shallow(<RouteListMultiStopComponent
       routeData={routeDataLoaded}
       destinationAirport="ABC"
+      onErrorMessage={onErrorMessage}
     />);
     expect(wrapper.find('div')).to.have.length(1);
   });

@@ -3,17 +3,23 @@ import React from 'react';
 import { expect } from 'chai';
 import { mount, shallow } from 'enzyme';
 import { spy } from 'sinon';
-import SearchFields from '../../client/components/SearchFields';
+import Autosuggest from 'react-autosuggest';
+import { SearchFields } from '../../client/containers/SearchFields';
 
 describe('<SearchFields />', () => {
   let wrapper;
-  const sourceAirport = '';
-  const destinationAirport = '';
   const onSourceAirportInput = () => {};
   const onDestinationAirportInput = () => {};
+  const airports = {
+    nodes: [
+      {
+        iata: 'BCN',
+        name: 'Barcelona International Airport',
+      },
+    ],
+  };
   const props = {
-    sourceAirport,
-    destinationAirport,
+    airports,
     onSourceAirportInput,
     onDestinationAirportInput,
   };
@@ -22,14 +28,16 @@ describe('<SearchFields />', () => {
     wrapper = shallow(<SearchFields {...props} />);
   });
 
+  // RENDERS COMPONENTS
   it('component renders', () => {
     expect(wrapper).to.have.length(1);
   });
 
-  it('shows two input fields', () => {
-    expect(wrapper.find('input')).to.have.length(2);
+  it('shows two <Autosuggest /> components', () => {
+    expect(wrapper.find(Autosuggest)).to.have.length(2);
   });
 
+  // PASSES INPUT TO PARENT FUNCTIONS
   it('passes input to onSourceAirportInput prop function', () => {
     const handleSourceAirportInputSpy = spy();
     props.onSourceAirportInput = handleSourceAirportInputSpy;
@@ -50,17 +58,12 @@ describe('<SearchFields />', () => {
     expect(handleDestinationAirportInputSpy.calledWith('BCN')).to.equal(true);
   });
 
-  it('departure input shows the correct sourceAirport', () => {
-    props.sourceAirport = 'SFO';
-    wrapper = mount(<SearchFields {...props} />);
-    const input = wrapper.find('input').at(0);
-    expect(input.prop('value')).to.equal('SFO');
-  });
-
-  it('destination input shows the correct destinationAirport', () => {
-    props.destinationAirport = 'CDG';
-    wrapper = mount(<SearchFields {...props} />);
-    const input = wrapper.find('input').at(1);
-    expect(input.prop('value')).to.equal('CDG');
+  // HELPER FUNCTION
+  it('onSuggestionsFetchRequested function finds airports, or returns []', () => {
+    wrapper = shallow(<SearchFields {...props} />);
+    wrapper.instance().onSuggestionsFetchRequested({ value: 'BCN' });
+    expect(wrapper.state('suggestions')).to.eql(airports.nodes);
+    wrapper.instance().onSuggestionsFetchRequested({ value: 'CDG' });
+    expect(wrapper.state('suggestions')).to.eql([]);
   });
 });

@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
-import SearchFields from './SearchFields';
-import SearchAdvanced from './SearchAdvanced';
+import SearchFieldsWithData from '../containers/SearchFields';
 import SearchButton from './SearchButton';
+import SearchAdvancedWithData from '../containers/SearchAdvanced';
 import RouteListNonstop from '../containers/RouteListNonstop';
-import RouteListOneStop from '../containers/RouteListOneStop';
 import RouteListMultiStop from '../containers/RouteListMultiStop';
 
 export default class App extends Component {
@@ -155,13 +154,11 @@ export default class App extends Component {
       <div>
         <h1 id="site-title">ROUTE to GO</h1>
         <h2 id="site-description">Find all possible flight routes between two cities.</h2>
-        <SearchFields
-          sourceAirport={this.state.sourceAirport}
-          destinationAirport={this.state.destinationAirport}
+        <SearchFieldsWithData
           onSourceAirportInput={this.handleSourceAirportInput}
           onDestinationAirportInput={this.handleDestinationAirportInput}
         />
-        <SearchAdvanced
+        <SearchAdvancedWithData
           onAdvancedOptionsInput={this.handleAdvancedOptionsInput}
         />
         <SearchButton onSubmit={this.createQuery} />

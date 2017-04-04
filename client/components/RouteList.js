@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import RouteMap from './RouteMap';
+// import RouteMap from './RouteMap';
 import Route from './Route';
 
 class RouteList extends Component {
@@ -106,7 +106,6 @@ class RouteList extends Component {
     if (this.props.routes.length > 0) {
       return (
         <div>
-          <RouteMap selectedRoute={this.state.selectedRoute} />
           <ul>
             {this.renderRoutes()}
           </ul>

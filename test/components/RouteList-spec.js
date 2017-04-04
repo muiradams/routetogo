@@ -3,7 +3,7 @@ import React from 'react';
 import { expect } from 'chai';
 import { shallow } from 'enzyme';
 import RouteList from '../../client/components/RouteList';
-import RouteMap from '../../client/components/RouteMap';
+// import RouteMap from '../../client/components/RouteMap';
 import Route from '../../client/components/Route';
 
 describe('<RouteList />', () => {
@@ -60,19 +60,20 @@ describe('<RouteList />', () => {
     expect(wrapper).to.have.length(1);
   });
 
-  it('shows a <RouteMap /> component only if there are routes', () => {
-    wrapper = shallow(<RouteList />);
-    expect(wrapper.find(RouteMap)).to.have.length(0);
-    wrapper = shallow(<RouteList routes={routes} />);
-    expect(wrapper.find(RouteMap)).to.have.length(1);
-  });
+  // RouteMap is for a future update
+  // it('shows a <RouteMap /> component only if there are routes', () => {
+  //   wrapper = shallow(<RouteList />);
+  //   expect(wrapper.find(RouteMap)).to.have.length(0);
+  //   wrapper = shallow(<RouteList routes={routes} />);
+  //   expect(wrapper.find(RouteMap)).to.have.length(1);
+  // });
 
-  it('passes selectedRoute to <RouteMap /> as props', () => {
-    wrapper.setState({ selectedRoute });
-    const routeMap = wrapper.find(RouteMap);
-    const selectedRouteState = wrapper.state('selectedRoute');
-    expect(routeMap.prop('selectedRoute')).to.equal(selectedRouteState);
-  });
+  // it('passes selectedRoute to <RouteMap /> as props', () => {
+  //   wrapper.setState({ selectedRoute });
+  //   const routeMap = wrapper.find(RouteMap);
+  //   const selectedRouteState = wrapper.state('selectedRoute');
+  //   expect(routeMap.prop('selectedRoute')).to.equal(selectedRouteState);
+  // });
 
   it('renders zero routes', () => {
     wrapper = shallow(<RouteList {...props} />);

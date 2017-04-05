@@ -39,21 +39,6 @@ if (process.env.NODE_ENV === 'production') {
     publicPath: webpackConfig.output.publicPath,
     index: 'index.html',
   }));
-
-  // const PUBLIC_DIR = path.join(__dirname, 'public/');
-
-  // app.get('*', (req, res, next) => {
-  //   const filename = path.join(PUBLIC_DIR, 'index.html');
-
-  //   compiler.outputFileSystem.readFile(filename, (err, result) => {
-  //     if (err) {
-  //         return next(err);
-  //     }
-  //     res.set('content-type', 'text/html');
-  //     res.send(result);
-  //     res.end();
-  //   });
-  // });
 }
 
 app.listen(port, () => {

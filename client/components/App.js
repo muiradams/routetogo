@@ -151,8 +151,8 @@ export default class App extends Component {
 
   render() {
     return (
-      <div>
-        <h1 id="site-title">ROUTE to GO</h1>
+      <div className="app">
+        <h1 id="site-title"><i className="fa fa-plane"></i>RouteToGo</h1>
         <h2 id="site-description">Find all possible flight routes between two cities.</h2>
         <SearchFieldsWithData
           onSourceAirportInput={this.handleSourceAirportInput}

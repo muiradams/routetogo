@@ -19,7 +19,7 @@ const Route = (props) => {
   }
 
   return (
-    <ul>
+    <ul className="route">
       {renderAirports()}
       <li>{stops}</li>
       <li>{airline}</li>

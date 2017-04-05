@@ -6,6 +6,7 @@ import App from './components/App';
 
 // Location of the SASS file for webpack to pre-compile
 import styleToPrecompile from './sass/style.sass';
+import background from '../public/images/background.jpg';
 
 const client = new ApolloClient();
 

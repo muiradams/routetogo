@@ -85,7 +85,7 @@ export class SearchFields extends Component {
     };
 
     return (
-      <div>
+      <div className="search-fields">
         <Autosuggest
           suggestions={suggestions}
           onSuggestionsFetchRequested={this.onSuggestionsFetchRequested}

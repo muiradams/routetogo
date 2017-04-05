@@ -105,7 +105,7 @@ class RouteList extends Component {
   render() {
     if (this.props.routes.length > 0) {
       return (
-        <div>
+        <div className="route-list">
           <ul>
             {this.renderRoutes()}
           </ul>

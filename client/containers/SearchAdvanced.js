@@ -79,14 +79,7 @@ export class SearchAdvanced extends Component {
     };
 
     return (
-      <div>
-        <input
-          type="checkbox"
-          name="nonstop"
-          id="nonstop"
-          onChange={this.handleNonstopChange}
-        />
-        <label htmlFor="nonstop">Nonstop</label>
+      <div className="search-advanced">
         <Autosuggest
           id="airline"
           name="airline"
@@ -96,6 +89,13 @@ export class SearchAdvanced extends Component {
           getSuggestionValue={getSuggestionValue}
           renderSuggestion={renderSuggestion}
           inputProps={inputProps}
+        />
+        <label htmlFor="nonstop">Nonstop?</label>
+        <input
+          type="checkbox"
+          name="nonstop"
+          id="nonstop"
+          onChange={this.handleNonstopChange}
         />
       </div>
     );

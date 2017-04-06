@@ -48,6 +48,6 @@ describe('<Route />', () => {
   });
 
   it('renders an <li> for each airport', () => {
-    expect(wrapper.find('li')).to.have.length(4);
+    expect(wrapper.find('li')).to.have.length(2);
   });
 });

@@ -9,22 +9,19 @@ const Route = (props) => {
 
   if (isEmpty(route)) return null;
 
-  const { airline, airports } = route;
-  const stops = airports.length - 2;
+  const { airports } = route;
 
   function renderAirports() {
-    return airports.map((airport) => {
-      return <li key={keyStart + airport.iata}>{airport.iata}</li>;
+    return airports.map((airport, index, array) => {
+      if (index < array.length - 1) {
+        return <li className="airport" key={keyStart + airport.iata}>{airport.iata}<i className="fa fa-long-arrow-right" /></li>;
+      }
+
+      return <li className="airport" key={keyStart + airport.iata}>{airport.iata}</li>;
     });
   }
 
-  return (
-    <ul className="route">
-      {renderAirports()}
-      <li>{stops}</li>
-      <li>{airline}</li>
-    </ul>
-  );
+  return <td><ul className="route">{renderAirports()}</ul></td>;
 };
 
 Route.defaultProps = {

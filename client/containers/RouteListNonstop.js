@@ -45,6 +45,10 @@ export class RouteListNonstopComponent extends Component {
     const { routeData } = this.props;
     let routes = [];
 
+    if (routeData.loading) {
+      return <div className="loading"></div>;
+    }
+
     if (routeData.allRoutes) {
       routes = this.createRoutesFromData(routeData.allRoutes.nodes);
       if (routes.length > 0) {
@@ -52,11 +56,7 @@ export class RouteListNonstopComponent extends Component {
       }
     }
 
-    if (routeData.loading) {
-      return <div>Loading...</div>;
-    }
-
-    return <div>No routes were found. Please Try Different Search Terms.</div>;
+    return <div className="route-list panel panel-default">No routes were found. Please Try Different Search Terms.</div>;
   }
 }
 

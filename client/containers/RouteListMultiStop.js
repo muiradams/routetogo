@@ -143,7 +143,7 @@ export class RouteListMultiStopComponent extends Component {
     let routes = [];
 
     if (routeData.loading) {
-      return <div>Loading...</div>;
+      return <div className="loading"></div>;
     }
 
     if (routeData.allRoutes) {
@@ -154,7 +154,7 @@ export class RouteListMultiStopComponent extends Component {
       }
     }
 
-    return <div>No routes were found. Please Try Different Search Terms.</div>;
+    return <div className="route-list panel panel-default">No routes were found. Please Try Different Search Terms.</div>;
   }
 }
 

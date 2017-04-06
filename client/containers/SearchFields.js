@@ -87,6 +87,7 @@ export class SearchFields extends Component {
     return (
       <div className="search-fields">
         <Autosuggest
+          id="source"
           suggestions={suggestions}
           onSuggestionsFetchRequested={this.onSuggestionsFetchRequested}
           onSuggestionsClearRequested={this.onSuggestionsClearRequested}
@@ -95,6 +96,7 @@ export class SearchFields extends Component {
           inputProps={sourceInputProps}
         />
         <Autosuggest
+          id="destination"
           suggestions={suggestions}
           onSuggestionsFetchRequested={this.onSuggestionsFetchRequested}
           onSuggestionsClearRequested={this.onSuggestionsClearRequested}

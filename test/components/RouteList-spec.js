@@ -96,16 +96,16 @@ describe('<RouteList />', () => {
 
   it('highlights the first route if selectedRouteId prop is empty', () => {
     wrapper = shallow(<RouteList routes={routes} {...props} />);
-    expect(wrapper.find('li').at(0)).to.have.className('highlight');
+    expect(wrapper.find('tr').at(1)).to.have.className('highlight');
   });
 
   it('highlights one selected route based on selectedRouteId prop', () => {
     wrapper = shallow(<RouteList routes={routes} selectedRouteId={'WyJyb3V0ZXMiLDU1NzcwXQ=='} {...props} />);
-    expect(wrapper.find('li.highlight')).to.have.length(1);
+    expect(wrapper.find('tr.highlight')).to.have.length(1);
   });
 
   it('should set selectedRoute state with correct route when route is clicked', () => {
-    const secondRoute = wrapper.find('li').at(1);
+    const secondRoute = wrapper.find('tr').at(2);
     secondRoute.simulate('click');
     expect(wrapper.state('selectedRoute')).to.equal(routes[1]);
   });

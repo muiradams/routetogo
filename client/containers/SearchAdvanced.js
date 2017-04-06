@@ -90,13 +90,14 @@ export class SearchAdvanced extends Component {
           renderSuggestion={renderSuggestion}
           inputProps={inputProps}
         />
-        <label htmlFor="nonstop">Nonstop?</label>
         <input
           type="checkbox"
           name="nonstop"
           id="nonstop"
+          className="fancy-check"
           onChange={this.handleNonstopChange}
         />
+        <label htmlFor="nonstop"><span>Nonstop?</span></label>
       </div>
     );
   }

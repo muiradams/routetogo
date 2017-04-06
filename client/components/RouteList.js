@@ -76,6 +76,8 @@ class RouteList extends Component {
 
     return sortedRoutes.map((route, index) => {
       const key = createUniqueKey(route);
+      const { airline, airports } = route;
+      const stops = airports.length - 2;
       // Highlight the selected route
       let className;
       if (!selectedRouteId) {
@@ -91,13 +93,15 @@ class RouteList extends Component {
       }
 
       return (
-        <li
+        <tr
           key={key}
           className={className}
           onClick={() => this.handleSelectRoute(route)}
         >
           <Route route={route} keyStart={key} />
-        </li>
+          <td className="stops">{stops}</td>
+          <td className="airline">{airline}</td>
+        </tr>
       );
     });
   }
@@ -105,10 +109,19 @@ class RouteList extends Component {
   render() {
     if (this.props.routes.length > 0) {
       return (
-        <div className="route-list">
-          <ul>
-            {this.renderRoutes()}
-          </ul>
+        <div className="route-list panel panel-default">
+          <table className="table table-striped">
+            <thead>
+              <tr>
+                <th>Routes</th>
+                <th>Stops</th>
+                <th>Airline</th>
+              </tr>
+            </thead>
+            <tbody>
+              {this.renderRoutes()}
+            </tbody>
+          </table>
         </div>
       );
     }

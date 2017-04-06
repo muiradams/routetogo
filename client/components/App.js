@@ -92,7 +92,7 @@ export default class App extends Component {
     const { errorMessage } = this.state;
 
     if (errorMessage) {
-      return <div className="error">{errorMessage}</div>;
+      return <div className="error alert alert-danger">{errorMessage}</div>;
     }
 
     return null;
@@ -152,8 +152,8 @@ export default class App extends Component {
   render() {
     return (
       <div className="app">
-        <h1 id="site-title"><i className="fa fa-plane"></i>RouteToGo</h1>
-        <h2 id="site-description">Find all possible flight routes between two cities.</h2>
+        <h1 id="site-title"><i className="fa fa-plane" />RouteToGo</h1>
+        <h2 id="site-description">Find all flight routes between two cities.</h2>
         <SearchFieldsWithData
           onSourceAirportInput={this.handleSourceAirportInput}
           onDestinationAirportInput={this.handleDestinationAirportInput}

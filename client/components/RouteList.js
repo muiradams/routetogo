@@ -114,7 +114,7 @@ class RouteList extends Component {
             <thead>
               <tr>
                 <th>Routes</th>
-                <th>Stops</th>
+                <th className="stops">Stops</th>
                 <th>Airline</th>
               </tr>
             </thead>

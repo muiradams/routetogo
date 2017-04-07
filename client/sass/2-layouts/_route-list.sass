@@ -15,12 +15,18 @@
         text-align: left
         padding-left: 20px
 
+        +small-device
+          padding-left: 8px
+
   .route
     display: flex
     // justify-content: space-between
     list-style: none
     margin: 0
     padding: 0 0 0 15px
+
+    +small-device
+      padding: 0
 
     .airport
       font-weight: 900
@@ -34,5 +40,9 @@
         +small-device
           display: none
 
-    .stops, .airline
-      font-weight: 400
+  .stops, .airline
+    font-weight: 400
+
+  .stops
+    +extra-small-device
+      display: none

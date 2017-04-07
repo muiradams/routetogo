@@ -1,6 +1,23 @@
 .react-autosuggest__container
   position: relative
 
+  +medium-device
+    margin: 0 auto 20px
+    width: 500px
+
+  +small-device
+    width: 100%
+
+  &:first-of-type
+    margin: 0 25px 0 0
+
+    +medium-device
+      margin: 0 auto 20px
+
+
+
+
+
   .react-autosuggest__input--open
     border-bottom-left-radius: 0
     border-bottom-right-radius: 0
@@ -21,6 +38,12 @@
     position: absolute
     width: 300px
     z-index: 2
+
+    +medium-device
+      width: 500px
+    
+    +small-device
+      width: 100%
 
     .react-autosuggest__suggestions-list
       max-height: 200px

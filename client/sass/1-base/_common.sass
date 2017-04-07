@@ -2,10 +2,10 @@ html
   height: 100%
 
 body
-  background-color: #FFFFFF
+  background-color: $background-color
   background: url("/images/background.jpg") no-repeat center center fixed
   background-size: cover
-  color: $brand-color-primary
+  color: $brand-color-secondary-hover
   font-family: $main-font
   font-weight: 300
   height: 100%
@@ -16,36 +16,63 @@ body
   width: 100%
 
   h1
+    color: $brand-color-primary
     font-weight: 900
     font-size: 48px
     margin-top: 50px
-    text-shadow: 1px 1px 1px rgba(255, 255, 255, .5)
+    text-shadow: .5px .5px 1px rgba(0, 0, 0, .05)
     i
+      color: $brand-color-secondary-hover
       margin-right: 5px
       vertical-align: middle
 
   h2
+    color: $brand-color-primary
     font-size: 20px
     font-weight: 300
-    margin-bottom: 50px
+    margin-bottom: 40px
   
   label
-    font-size: 28px
-    font-weight: 300
+    color: $brand-color-secondary
+    font-size: 20px
+    font-weight: 400
     margin: 0 5px 0 0
 
-  input
-    margin: 10px
+  input:first-of-type
+    margin: 0 20px 0 0
     
     &[type="text"]
-      border: 1px solid $brand-color-secondary
+      border: 1px solid $brand-color-secondary-hover
       border-radius: 5px
-      font-size: 28px
+      font-size: 20px
+      font-weight: 400
       height: 50px
-      padding: 10px
+      letter-spacing: 1.5px
+      padding: 15px
       width: 300px
 
-    &[type="checkbox"]
-      margin: 0
-      height: 50px
-      width: 50px
+      &:focus
+        border-color: $brand-color-primary
+        outline: none
+
+  button
+    background-color: $brand-color-secondary
+    border: 1px solid $brand-color-secondary-hover
+    border-radius: 5px
+    color: #FFFFFF
+    font-size: 20px
+    height: 50px
+    margin: 10px 0 20px
+    width: 150px
+
+    &:hover
+      background-color: $brand-color-secondary-hover
+
+    &:focus
+      border-color: $brand-color-primary
+      outline: none
+
+  .alert
+    border-color: $brand-color-primary
+    max-width: 625px
+    margin: 0 auto 20px

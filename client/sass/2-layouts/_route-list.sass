@@ -1,0 +1,32 @@
+.route-list
+  border-color: $brand-color-secondary-hover
+  margin: 0 auto 50px
+  max-width: 625px
+
+  thead
+    background-color: $brand-color-secondary-hover
+
+    th
+      color: $white
+      font-weight: 400
+      text-align: center
+
+      &:first-of-type
+        text-align: left
+        padding-left: 20px
+
+  .route
+    display: flex
+    // justify-content: space-between
+    list-style: none
+    margin: 0
+    padding: 0 0 0 15px
+
+    .airport
+      font-weight: 900
+
+      i
+        margin: 0 5px
+
+    .stops, .airline
+      font-weight: 400

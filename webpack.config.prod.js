@@ -26,7 +26,12 @@ module.exports = {
           fallback: 'style-loader',
           use: ['css-loader', 'postcss-loader', 'sass-loader']
         })
-      }
+      },
+      {
+        use: 'file-loader?name=./images/[name].[ext]',
+        test: /\.(png|jpg|jpeg|gif|eot|ttf|woff|woff2|svg|svgz)(\?.+)?$/,
+        exclude: /node_modules/,
+      },
     ]
   },
   plugins: [

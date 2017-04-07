@@ -74,8 +74,9 @@ describe('<App />', () => {
 
     it('starts with an empty advancedOptions', () => {
       const advancedOptions = {
-        airline: 'all',
+        airline: '',
         nonstop: false,
+        isAirlineValid: true,
       };
       expect(wrapper.state('advancedOptions')).to.eql(advancedOptions);
     });
@@ -92,12 +93,12 @@ describe('<App />', () => {
   // UPDATES THE STATE
   context('event handlers', () => {
     it('adds sourceAirport to state', () => {
-      wrapper.instance().handleSourceAirportInput('SMF');
+      wrapper.instance().handleSourceAirportInput({ sourceAirport: 'SMF' });
       expect(wrapper.state('sourceAirport')).to.eql('SMF');
     });
 
     it('adds destinationAirport to state', () => {
-      wrapper.instance().handleDestinationAirportInput('SMF');
+      wrapper.instance().handleDestinationAirportInput({ destinationAirport: 'SMF' });
       expect(wrapper.state('destinationAirport')).to.eql('SMF');
     });
 
@@ -256,9 +257,7 @@ describe('<App />', () => {
     it('adds error to errorMessage if not nonstop, but there is not a source AND destination set', () => {
       wrapper.setState({
         sourceAirport: 'SMF',
-        advancedOptions: {
-          nonstop: false,
-        },
+        destinationAirport: '',
       });
       wrapper.instance().createQuery();
       expect(wrapper.state('errorMessage').length).to.be.greaterThan(0);
@@ -280,6 +279,7 @@ describe('<App />', () => {
         advancedOptions: {
           nonstop: false,
           airline: 'UA',
+          isAirlineValid: true,
         },
         errorMessage: '',
       });
@@ -293,7 +293,8 @@ describe('<App />', () => {
         destinationAirport: 'CDG',
         advancedOptions: {
           nonstop: true,
-          airline: 'all',
+          airline: '',
+          isAirlineValid: true,
         },
       });
       wrapper.instance().createQuery();

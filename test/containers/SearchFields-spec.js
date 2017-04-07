@@ -42,20 +42,22 @@ describe('<SearchFields />', () => {
     const handleSourceAirportInputSpy = spy();
     props.onSourceAirportInput = handleSourceAirportInputSpy;
     wrapper = mount(<SearchFields {...props} />);
+    wrapper.setState({ sourceIATA: 'CDG', sourceName: 'Charles' });
     const input = wrapper.find('input').at(0);
-    input.simulate('change', { target: { value: 'CDG' } });
+    input.simulate('change', { target: { value: '(CDG) Charles' } });
     expect(handleSourceAirportInputSpy.calledOnce).to.equal(true);
-    expect(handleSourceAirportInputSpy.calledWith('CDG')).to.equal(true);
+    expect(handleSourceAirportInputSpy.calledWith({ sourceAirport: 'CDG', isSourceValid: true })).to.equal(true);
   });
 
   it('passes input to onDestinationAirportInput prop function', () => {
     const handleDestinationAirportInputSpy = spy();
     props.onDestinationAirportInput = handleDestinationAirportInputSpy;
     wrapper = mount(<SearchFields {...props} />);
+    wrapper.setState({ destinationIATA: 'BCN', destinationName: 'Barcelona' });
     const input = wrapper.find('input').at(1);
-    input.simulate('change', { target: { value: 'BCN' } });
+    input.simulate('change', { target: { value: '(BCN) Barcelona' } });
     expect(handleDestinationAirportInputSpy.calledOnce).to.equal(true);
-    expect(handleDestinationAirportInputSpy.calledWith('BCN')).to.equal(true);
+    expect(handleDestinationAirportInputSpy.calledWith({ destinationAirport: 'BCN', isDestinationValid: true })).to.equal(true);
   });
 
   // HELPER FUNCTION

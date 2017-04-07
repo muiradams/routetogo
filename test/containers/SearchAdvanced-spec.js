@@ -12,9 +12,11 @@ describe('<SearchAdvanced />', () => {
   const airlines = {
     nodes: [
       {
+        iata: 'AA',
         name: 'American Airlines',
       },
       {
+        iata: 'UA',
         name: 'United Airlines',
       },
     ],
@@ -51,7 +53,7 @@ describe('<SearchAdvanced />', () => {
 
   it('airline input updates the state on change', () => {
     wrapper.instance().handleSetAirline(null, { newValue: 'AA' });
-    expect(wrapper.state('airline')).to.eql('AA');
+    expect(wrapper.state('airlineInput')).to.eql('AA');
   });
 
   // PASSES INPUT TO PARENT FUNCTION
@@ -66,6 +68,7 @@ describe('<SearchAdvanced />', () => {
     expect(handleStopsInputSpy.calledWith({
       nonstop: true,
       airline: '',
+      isAirlineValid: true,
     })).to.equal(true);
   });
 

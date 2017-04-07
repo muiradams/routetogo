@@ -11,8 +11,10 @@ export default class App extends Component {
 
     this.state = {
       sourceAirport: '',
+      isSourceValid: true,
       destinationAirport: '',
-      advancedOptions: { nonstop: false, airline: 'all' },
+      isDestinationValid: true,
+      advancedOptions: { nonstop: false, airline: '', isAirlineValid: true },
       query: {},
       errorMessage: '',
     };
@@ -26,12 +28,12 @@ export default class App extends Component {
     this.renderRouteList = this.renderRouteList.bind(this);
   }
 
-  handleSourceAirportInput(sourceAirport) {
-    this.setState({ sourceAirport });
+  handleSourceAirportInput({ sourceAirport, isSourceValid }) {
+    this.setState({ sourceAirport, isSourceValid });
   }
 
-  handleDestinationAirportInput(destinationAirport) {
-    this.setState({ destinationAirport });
+  handleDestinationAirportInput({ destinationAirport, isDestinationValid }) {
+    this.setState({ destinationAirport, isDestinationValid });
   }
 
   handleAdvancedOptionsInput(advancedOptions) {
@@ -45,15 +47,25 @@ export default class App extends Component {
   createQuery() {
     const {
       sourceAirport,
+      isSourceValid,
       destinationAirport,
-      advancedOptions: { nonstop, airline },
+      isDestinationValid,
+      advancedOptions: { nonstop, airline, isAirlineValid },
     } = this.state;
-    let airlineQuery;
 
-    if (airline === 'all') {
-      airlineQuery = '';
-    } else {
-      airlineQuery = airline;
+    if(!isSourceValid) {
+      this.handleErrorMessage('Please choose a valid source airport.');
+      return;
+    }
+
+    if(!isDestinationValid) {
+      this.handleErrorMessage('Please choose a valid destination airport.');
+      return;
+    }
+
+    if (!isAirlineValid) {
+      this.handleErrorMessage('Please choose a valid airline.');
+      return;
     }
 
     if (!sourceAirport && !destinationAirport) {
@@ -67,12 +79,12 @@ export default class App extends Component {
     }
 
     if (!nonstop && (!sourceAirport || !destinationAirport)) {
-      this.handleErrorMessage('Both departure and destination airports must be provided.');
+      this.handleErrorMessage('Both departure and destination airports must be provided for routes with stops.');
       return;
     }
 
-    if (!nonstop && !airlineQuery) {
-      this.handleErrorMessage('An airline must be provided.');
+    if (!nonstop && !airline) {
+      this.handleErrorMessage('Airline must be provided for routes with stops.');
       return;
     }
 
@@ -81,7 +93,7 @@ export default class App extends Component {
       destinationAirport,
       advancedOptions: {
         nonstop,
-        airline: airlineQuery,
+        airline,
       },
     };
 

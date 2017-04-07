@@ -3,11 +3,14 @@ import { graphql } from 'react-apollo';
 import Autosuggest from 'react-autosuggest';
 import airportsQuery from '../queries/airports';
 
-const getSuggestionValue = suggestion => suggestion.iata;
+// Only show suggestions when input value is at least 3 characters long
+const shouldRenderSuggestions = value => value.trim().length > 2;
+
+const getSuggestionValue = suggestion => `(${suggestion.iata}) ${suggestion.name}`;
 
 const renderSuggestion = suggestion => (
   <div>
-    {suggestion.iata} - {suggestion.name}
+    ({suggestion.iata}) {suggestion.name}
   </div>
 );
 
@@ -16,13 +19,21 @@ export class SearchFields extends Component {
     super(props);
     this.state = {
       sourceValue: '',
+      sourceIATA: '',
+      sourceName: '',
       destinationValue: '',
+      destinationIATA: '',
+      destinationName: '',
       suggestions: [],
     };
     this.setSourceAirport = this.setSourceAirport.bind(this);
     this.setDestinationAirport = this.setDestinationAirport.bind(this);
     this.onSuggestionsFetchRequested = this.onSuggestionsFetchRequested.bind(this);
     this.onSuggestionsClearRequested = this.onSuggestionsClearRequested.bind(this);
+    this.onSourceSelected = this.onSourceSelected.bind(this);
+    this.onDestinationSelected = this.onDestinationSelected.bind(this);
+    this.isSourceValid = this.isSourceValid.bind(this);
+    this.isDestinationValid = this.isDestinationValid.bind(this);
   }
 
   onSuggestionsFetchRequested({ value }) {
@@ -55,18 +66,48 @@ export class SearchFields extends Component {
     });
   }
 
+  onSourceSelected(event, { suggestion: source }) {
+    this.setState({ sourceIATA: source.iata, sourceName: source.name });
+    this.props.onSourceAirportInput({ sourceAirport: source.iata, isSourceValid: true });
+  }
+
+  onDestinationSelected(event, { suggestion: destination }) {
+    this.setState({ destinationIATA: destination.iata, destinationName: destination.name });
+    this.props.onDestinationAirportInput({ destinationAirport: destination.iata, isDestinationValid: true });
+  }
+
   setSourceAirport(event, { newValue }) {
-    this.setState({
-      sourceValue: newValue,
-    });
-    this.props.onSourceAirportInput(newValue);
+    const { sourceIATA } = this.state;
+    let isSourceValid = true;
+
+    if (newValue) {
+      isSourceValid = this.isSourceValid(newValue);
+    }
+
+    this.setState({ sourceValue: newValue });
+    this.props.onSourceAirportInput({ sourceAirport: sourceIATA, isSourceValid });
   }
 
   setDestinationAirport(event, { newValue }) {
-    this.setState({
-      destinationValue: newValue,
-    });
-    this.props.onDestinationAirportInput(newValue);
+    const { destinationIATA } = this.state;
+    let isDestinationValid = true;
+
+    if (newValue) {
+      isDestinationValid = this.isDestinationValid(newValue);
+    }
+
+    this.setState({ destinationValue: newValue });
+    this.props.onDestinationAirportInput({ destinationAirport: destinationIATA, isDestinationValid });
+  }
+
+  isSourceValid(sourceValue) {
+    const { sourceIATA, sourceName } = this.state;
+    return sourceValue === getSuggestionValue({ name: sourceName, iata: sourceIATA });
+  }
+
+  isDestinationValid(destinationValue) {
+    const { destinationIATA, destinationName } = this.state;
+    return destinationValue === getSuggestionValue({ name: destinationName, iata: destinationIATA });
   }
 
   render() {
@@ -91,6 +132,8 @@ export class SearchFields extends Component {
           suggestions={suggestions}
           onSuggestionsFetchRequested={this.onSuggestionsFetchRequested}
           onSuggestionsClearRequested={this.onSuggestionsClearRequested}
+          onSuggestionSelected={this.onSourceSelected}
+          shouldRenderSuggestions={shouldRenderSuggestions}
           getSuggestionValue={getSuggestionValue}
           renderSuggestion={renderSuggestion}
           inputProps={sourceInputProps}
@@ -100,6 +143,8 @@ export class SearchFields extends Component {
           suggestions={suggestions}
           onSuggestionsFetchRequested={this.onSuggestionsFetchRequested}
           onSuggestionsClearRequested={this.onSuggestionsClearRequested}
+          onSuggestionSelected={this.onDestinationSelected}
+          shouldRenderSuggestions={shouldRenderSuggestions}
           getSuggestionValue={getSuggestionValue}
           renderSuggestion={renderSuggestion}
           inputProps={destinationInputProps}

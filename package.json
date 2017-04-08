@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "nodemon server.js",
     "postinstall": "webpack -p --config ./webpack.config.prod.js",
-    "start": "NODE_ENV='production' POSTGRESQL_URI='postgres://138.197.193.22:5432/routetogo' node server.js",
+    "start": "NODE_ENV='production' node server.js",
     "test": "mocha --compilers js:babel-register --require ./test/test_helper.js --recursive ./test",
     "test:watch": "npm run test -- --watch"
   },

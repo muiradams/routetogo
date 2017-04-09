@@ -10,3 +10,6 @@ bundle.js.map
 npm-debug.log
 style.css
 style.css.map
+
+# keys/passwords
+config.js

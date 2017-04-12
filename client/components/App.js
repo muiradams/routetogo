@@ -174,7 +174,7 @@ export default class App extends Component {
           onAdvancedOptionsInput={this.handleAdvancedOptionsInput}
         />
         <SearchButton onSubmit={this.createQuery} />
-        <div>
+        <div className="query-results">
           {this.renderErrorMessage()}
           {this.renderRouteList()}
         </div>

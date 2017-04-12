@@ -1,9 +1,9 @@
 html
-  height: 100%
+  height: 100vh
+  min-height: 100%
 
 body
-  background-color: $background-color
-  background: url("/images/background.jpg") no-repeat center center fixed
+  background: $background-color url("/images/background.jpg") no-repeat center center fixed
   background-size: cover
   color: $brand-color-secondary-hover
   font-family: $main-font
@@ -22,8 +22,8 @@ body
     margin-top: 50px
     text-shadow: .5px .5px 1px rgba(0, 0, 0, .05)
 
-    +extra-small-device
-      margin-top: 30px
+    +small-device
+      margin-top: 20px
 
     i
       color: $brand-color-secondary-hover

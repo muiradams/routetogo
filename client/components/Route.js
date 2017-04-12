@@ -21,7 +21,7 @@ const Route = (props) => {
     });
   }
 
-  return <td><ul className="route">{renderAirports()}</ul></td>;
+  return <td className="airports"><ul className="route">{renderAirports()}</ul></td>;
 };
 
 Route.defaultProps = {
